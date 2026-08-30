@@ -16,10 +16,8 @@ import subprocess
 
 import cv2
 
-SAMPLE_DT = 0.1      # detection sampling step (10 fps)
 ASSOC = 0.25         # associate hits to frames within this window (s)
-EDGE_EXT = 0.6       # extend blur beyond first/last hit of an interval (s)
-GAP_MERGE = 0.9      # bridge gaps in a template's hit timeline (s)
+EDGE_EXT = 0.6       # extend blur beyond first/last hit of a run (s)
 PAD_FRAC = 0.14      # spatial padding fraction
 PAD_MIN = 7          # spatial padding minimum (px)
 
@@ -30,22 +28,49 @@ ROW_EXT_TEMPLATE = "refno"
 ROW_EXT_FACTOR = 5.4  # extra width, in units of matched width
 
 
-def padded(x, y, w, h, W, H):
-    px = max(PAD_MIN, int(w * PAD_FRAC))
-    py = max(PAD_MIN, int(h * PAD_FRAC))
+def padded(x, y, w, h, W, H, frac=PAD_FRAC):
+    px = max(PAD_MIN, int(w * frac))
+    py = max(PAD_MIN, int(h * frac))
     return (max(0, x - px), max(0, y - py),
             min(W, x + w + px), min(H, y + h + py))
 
 
-def hit_rects(h):
-    rects = [(h["x"], h["y"], h["w"], h["h"])]
+def hit_rects(h, W, H):
+    """Padded rects for one hit. The row-extension rect gets only minimal
+    padding so it doesn't bleed into neighbouring page elements."""
+    rects = [padded(h["x"], h["y"], h["w"], h["h"], W, H)]
     if h["name"] == ROW_EXT_TEMPLATE:
-        rects.append((h["x"], h["y"], int(h["w"] * ROW_EXT_FACTOR), h["h"]))
+        rects.append(padded(h["x"], h["y"], int(h["w"] * ROW_EXT_FACTOR),
+                            h["h"], W, H, frac=0.0))
     return rects
 
 
+def iou(a, b):
+    ix = max(0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = ix * iy
+    if inter == 0:
+        return 0.0
+    aa = (a[2] - a[0]) * (a[3] - a[1])
+    ab = (b[2] - b[0]) * (b[3] - b[1])
+    return inter / float(aa + ab - inter)
+
+
+GAP_FILL = 3.5       # bridge match gaps at a stable location (s), e.g. when
+                     # the mouse cursor parks on the text and breaks the match
+
+
 def build_schedule(hits, W, H):
-    """Return list of blur events (t_start, t_end, rect)."""
+    """Return list of blur events (t_start, t_end, rect).
+
+    Hits are grouped per template into location tracks (a hit joins the
+    track whose latest rect it overlaps). Within a track, gaps up to
+    GAP_FILL are bridged — a match hole at a stable location means an
+    occlusion (e.g. the mouse cursor parked on the text), not absence —
+    and the track's run edges get EDGE_EXT of temporal padding. A stray
+    false hit elsewhere on the page lands in its own track and cannot
+    break another track's bridging.
+    """
     by_name = {}
     for h in hits:
         by_name.setdefault(h["name"], []).append(h)
@@ -53,23 +78,36 @@ def build_schedule(hits, W, H):
     events = []
     for name, hs in by_name.items():
         hs.sort(key=lambda h: h["t"])
+        tracks = []  # each: list of hits
         for h in hs:
-            for r in hit_rects(h):
-                events.append((h["t"] - ASSOC, h["t"] + ASSOC, padded(*r, W, H)))
-        # extend before the first and after the last hit of contiguous runs
-        runs = []
-        start = prev = hs[0]
-        for h in hs[1:]:
-            if h["t"] - prev["t"] > GAP_MERGE:
-                runs.append((start, prev))
-                start = h
-            prev = h
-        runs.append((start, prev))
-        for a, b in runs:
-            for h, (t1, t2) in ((a, (a["t"] - EDGE_EXT, a["t"])),
-                                (b, (b["t"], b["t"] + EDGE_EXT))):
-                for r in hit_rects(h):
-                    events.append((t1, t2, padded(*r, W, H)))
+            base = padded(h["x"], h["y"], h["w"], h["h"], W, H)
+            for tr in tracks:
+                p = tr[-1]
+                if iou(base, padded(p["x"], p["y"], p["w"], p["h"], W, H)) >= 0.3:
+                    tr.append(h)
+                    break
+            else:
+                tracks.append([h])
+        for tr in tracks:
+            for h in tr:
+                for r in hit_rects(h, W, H):
+                    events.append((h["t"] - ASSOC, h["t"] + ASSOC, r))
+            for a, b in zip(tr, tr[1:]):
+                rects_a, rects_b = hit_rects(a, W, H), hit_rects(b, W, H)
+                if b["t"] - a["t"] <= GAP_FILL:
+                    for ra, rb in zip(rects_a, rects_b):
+                        union = (min(ra[0], rb[0]), min(ra[1], rb[1]),
+                                 max(ra[2], rb[2]), max(ra[3], rb[3]))
+                        events.append((a["t"], b["t"], union))
+                else:  # run boundary inside the track
+                    for ra in rects_a:
+                        events.append((a["t"], a["t"] + EDGE_EXT, ra))
+                    for rb in rects_b:
+                        events.append((b["t"] - EDGE_EXT, b["t"], rb))
+            for r in hit_rects(tr[0], W, H):
+                events.append((tr[0]["t"] - EDGE_EXT, tr[0]["t"], r))
+            for r in hit_rects(tr[-1], W, H):
+                events.append((tr[-1]["t"], tr[-1]["t"] + EDGE_EXT, r))
     return events
 
 
@@ -114,6 +152,9 @@ def main():
     ap.add_argument("--extra", help="JSON file of manual blur events "
                     "[{t1,t2,x1,y1,x2,y2},...] for regions template matching "
                     "cannot reach (e.g. rows clipped by a caption overlay)")
+    ap.add_argument("--clamp-end", type=float, default=None,
+                    help="no blur at or after this time (s), e.g. the hard "
+                    "cut where the recorded page gives way to an outro")
     args = ap.parse_args()
 
     with open(args.hits) as f:
@@ -133,6 +174,9 @@ def main():
             for e in json.load(f):
                 events.append((e["t1"], e["t2"],
                                (e["x1"], e["y1"], e["x2"], e["y2"])))
+    if args.clamp_end is not None:
+        events = [(t1, min(t2, args.clamp_end), r) for (t1, t2, r) in events
+                  if t1 < args.clamp_end]
     print(f"{len(events)} blur events; video {W}x{H}@{fps}")
 
     cmd = [args.ffmpeg, "-y", "-loglevel", "error",

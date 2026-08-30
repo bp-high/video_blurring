@@ -10,11 +10,14 @@ The blurred video is committed at
 
 | Item | Where it appears |
 | --- | --- |
-| Account number (partially masked, last digits visible) | account summary, transfer form, confirmation, success, history screens |
 | Home branch name and branch code | account summary, transfer form, confirmation, success, history screens |
 | Destination branch name and branch code (typed and displayed) | transfer form, confirmation, success, history screens |
-| Transfer reference number and its whole history-table row (incl. date) | history screen |
-| Welcome name, username and password fields (already masked in the demo; blurred anyway) | header / login screen |
+| Transfer reference number and its history-table row (incl. date) | history screen |
+
+Fields the demo itself already masks — the username (`xxxxxxxx`), the
+password dots, the welcome name (`Mr. XXXX...`) and the account number
+(`000000XXXXXXXX602`) — are left as-is: they carry no real information and
+blurring them only added noise.
 
 ## How it works
 
@@ -30,10 +33,13 @@ static blur boxes don't work. Instead ([`blur_pipeline/`](blur_pipeline)):
    caption bar at the frame edge during scroll transitions.
 2. **`blur.py`** — turns hits into blur events with spatial padding and
    temporal padding (blur starts before a string appears and ends after it
-   leaves), pixelates + Gaussian-blurs each region per frame, and pipes the
-   frames to ffmpeg (libx264, original audio copied). `--filters` applies
-   per-template constraints for templates that also match unrelated UI
-   (see `sbi_demo_filters.json`).
+   leaves), bridges match gaps at a stable location (e.g. when the mouse
+   cursor parks on the text and breaks the match), pixelates +
+   Gaussian-blurs each region per frame, and pipes the frames to ffmpeg
+   (libx264, original audio copied). `--filters` applies per-template
+   time/region/score constraints (see `sbi_demo_filters.json`),
+   `--extra` adds manual blur events, and `--clamp-end` stops all blur at
+   the hard cut to the outro.
 3. **`verify.py`** — re-runs every template against the *output* video at
    10 fps over the full scale range; any match at the detection threshold
    means a string survived redaction. The final output verifies clean.
@@ -46,8 +52,10 @@ they contain the very content being redacted. With the source video and a
 
 ```bash
 pip install opencv-python-headless numpy
-python3 blur_pipeline/detect.py --video input.mp4 --templates templates/ --out hits.json
+python3 blur_pipeline/detect.py --video input.mp4 --templates templates/ \
+    --out hits.json --tmin 28 --tmax 125 --thresh 0.70
 python3 blur_pipeline/blur.py   --video input.mp4 --hits hits.json \
-    --filters sbi_demo_filters.json --out blurred.mp4
-python3 blur_pipeline/verify.py --video blurred.mp4 --templates templates/ --skip pwd
+    --filters sbi_demo_filters.json --extra sbi_demo_extra.json \
+    --clamp-end 123.03 --out blurred.mp4
+python3 blur_pipeline/verify.py --video blurred.mp4 --templates templates/ --thresh 0.70
 ```

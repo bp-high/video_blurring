@@ -1,10 +1,46 @@
 {
-  "pwd": {
-    "tmin": 36.0, "tmax": 41.5,
-    "xmin": 40, "xmax": 140,
-    "ymin": 200, "ymax": 270
+  "_comment": "Detection runs at --thresh 0.70 so zoom-degraded long strings still match; these fences confine each template to the screens where its string genuinely appears and restore a higher floor for the short digit templates, which false-match UI text at low scores.",
+  "branch_home": {
+    "tmin": 37,
+    "tmax": 125
   },
-  "username": {
-    "min_score": 0.78
+  "branch_home_slim": {
+    "tmin": 37,
+    "tmax": 125,
+    "min_score": 0.75
+  },
+  "brname_input": {
+    "tmin": 72,
+    "tmax": 84
+  },
+  "code_input": {
+    "tmin": 65,
+    "tmax": 84,
+    "min_score": 0.72
+  },
+  "branch_dest": {
+    "tmin": 75,
+    "tmax": 125
+  },
+  "branch_dest_slim": {
+    "tmin": 75,
+    "tmax": 125,
+    "min_score": 0.75
+  },
+  "code_30013": {
+    "tmin": 81,
+    "tmax": 125,
+    "xmin": 170,
+    "min_score": 0.8
+  },
+  "code_04388": {
+    "tmin": 81,
+    "tmax": 125,
+    "xmin": 170,
+    "min_score": 0.8
+  },
+  "refno": {
+    "tmin": 116,
+    "tmax": 125
   }
 }

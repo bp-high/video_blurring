@@ -21,6 +21,8 @@ def main():
     ap.add_argument("--skip", nargs="*", default=[],
                     help="template names to skip (e.g. ones that match "
                          "decorative UI textures)")
+    ap.add_argument("--thresh", type=float, default=THRESH,
+                    help="leak threshold; use the value detection ran with")
     args = ap.parse_args()
 
     tpls = {k: v for k, v in load_templates(args.templates).items()
@@ -38,7 +40,7 @@ def main():
             t = idx / fps
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             for nm, tpl in tpls.items():
-                for h in match_frame(gray, tpl, SCALES, thresh=THRESH):
+                for h in match_frame(gray, tpl, SCALES, thresh=args.thresh):
                     leaks += 1
                     print(f"LEAK t={t:.2f} {nm} {h[:5]}", flush=True)
         idx += 1

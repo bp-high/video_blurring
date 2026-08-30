@@ -89,6 +89,10 @@ def main():
                     help="skip content before this time (s)")
     ap.add_argument("--tmax", type=float, default=1e9,
                     help="skip content after this time (s)")
+    ap.add_argument("--thresh", type=float, default=THRESH,
+                    help="match threshold; lower catches text the browser "
+                    "zoom has degraded, at the cost of more false hits "
+                    "(constrain those via the blur step's --filters)")
     args = ap.parse_args()
 
     tpls = load_templates(args.templates)
@@ -107,7 +111,7 @@ def main():
         if idx % int(round(fps)) == 0 and args.tmin <= t <= args.tmax:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             for name, tpl in tpls.items():
-                if match_frame(gray, tpl, SCALES):
+                if match_frame(gray, tpl, SCALES, thresh=args.thresh):
                     s = active.setdefault(name, set())
                     for d in range(-2, 3):
                         s.add(int(t) + d)
@@ -133,7 +137,8 @@ def main():
             if names:
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 for nm in names:
-                    for h in match_frame(gray, tpls[nm], SCALES):
+                    for h in match_frame(gray, tpls[nm], SCALES,
+                                         thresh=args.thresh):
                         x, y, w, hh, sc, s = h
                         hits_out.append(dict(t=round(t, 3), name=nm, x=x, y=y,
                                              w=w, h=hh, score=round(sc, 3), scale=s))

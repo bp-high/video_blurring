@@ -16,7 +16,9 @@ import subprocess
 
 import cv2
 
-ASSOC = 0.25         # associate hits to frames within this window (s)
+ASSOC = 0.12         # associate hits to frames within this window (s);
+                     # detection samples at 10 fps, so ±0.12 stays gapless
+                     # while barely trailing text that is moving mid-zoom
 EDGE_EXT = 0.3       # extend blur beyond first/last hit of a run (s)
 PAD_FRAC = 0.06      # spatial padding fraction
 PAD_MIN = 5          # spatial padding minimum (px)
@@ -139,10 +141,10 @@ def anonymize(frame, rect):
     h, w = roi.shape[:2]
     if h < 2 or w < 2:
         return
-    small = cv2.resize(roi, (max(1, w // 14), max(1, h // 12)),
+    small = cv2.resize(roi, (max(1, w // 18), max(1, h // 12)),
                        interpolation=cv2.INTER_AREA)
     big = cv2.resize(small, (w, h), interpolation=cv2.INTER_NEAREST)
-    big = cv2.GaussianBlur(big, (0, 0), sigmaX=max(2.0, h / 5.0))
+    big = cv2.GaussianBlur(big, (0, 0), sigmaX=max(2.5, h / 4.0))
     frame[y1:y2, x1:x2] = big
 
 

@@ -1,5 +1,11 @@
 # Video blurring — SBI netbanking demo
 
+> This repo also packages the whole problem as a verifiable long-horizon
+> Harbor task — seed video, programmatic verifier with per-occurrence
+> coverage / visibility / blur-size measures, oracle solution, and run
+> report — under
+> [`collinear-candidate/sbi-netbanking-redaction/`](collinear-candidate/sbi-netbanking-redaction).
+
 Redacts sensitive on-screen information in the SBI "RINB – Transfer of
 Savings Account" netbanking demo screen recording (854x480, 2m13s).
 

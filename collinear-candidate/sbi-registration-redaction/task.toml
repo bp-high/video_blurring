@@ -1,0 +1,26 @@
+version = "1.0"
+
+[metadata]
+slug = "collinear-candidate/sbi-registration-redaction"
+name = "SBI registration recording redaction"
+description = "Irreversibly obscure live account, card and transaction data in a 3m06s internet-banking registration screen recording — including tokenized card values the gateway substitutes mid-page and identifiers buried in URL query strings — without touching site-masked values, captchas or page chrome, preserving audio and container properties."
+authors = ["bhavishpahwa2@gmail.com"]
+category = "video-processing"
+tags = ["computer-vision", "privacy-redaction", "long-horizon", "data-forensics", "verification-discipline"]
+difficulty = "hard"
+
+[agent]
+timeout_sec = 10800
+
+[verifier]
+timeout_sec = 2400
+
+[environment]
+build = "environment/Dockerfile"
+network = "none"
+cpus = 4
+memory_gb = 8
+storage_gb = 4
+
+[oracle]
+entrypoint = "solution/solve.sh"

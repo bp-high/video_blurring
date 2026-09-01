@@ -1,0 +1,306 @@
+[
+ {
+  "id": "acct",
+  "template": "acct.png",
+  "f1": 2150,
+  "f2": 2704,
+  "x": 264,
+  "y": 116,
+  "margin": 26,
+  "thresh": 0.75,
+  "box": [
+   262,
+   113,
+   379,
+   133
+  ]
+ },
+ {
+  "id": "cif",
+  "template": "cif.png",
+  "f1": 2150,
+  "f2": 2704,
+  "x": 264,
+  "y": 137,
+  "margin": 26,
+  "thresh": 0.75,
+  "box": [
+   262,
+   134,
+   379,
+   154
+  ]
+ },
+ {
+  "id": "branch",
+  "template": "branch.png",
+  "f1": 2150,
+  "f2": 2704,
+  "x": 264,
+  "y": 157,
+  "margin": 26,
+  "thresh": 0.75,
+  "box": [
+   262,
+   154,
+   334,
+   174
+  ]
+ },
+ {
+  "id": "mobile",
+  "template": "mobile.png",
+  "f1": 2150,
+  "f2": 2704,
+  "x": 303,
+  "y": 198,
+  "margin": 26,
+  "thresh": 0.75,
+  "box": [
+   301,
+   195,
+   379,
+   215
+  ]
+ },
+ {
+  "id": "cardnum",
+  "template": "cardnum.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 441,
+  "y": 238,
+  "margin": 22,
+  "thresh": 0.75,
+  "box": [
+   439,
+   235,
+   555,
+   253
+  ]
+ },
+ {
+  "id": "expiry",
+  "template": "expiry.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 444,
+  "y": 253,
+  "margin": 22,
+  "thresh": 0.72,
+  "box": [
+   441,
+   251,
+   517,
+   269
+  ]
+ },
+ {
+  "id": "cardname",
+  "template": "cardname.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 441,
+  "y": 278,
+  "margin": 22,
+  "thresh": 0.75,
+  "box": [
+   439,
+   275,
+   555,
+   294
+  ]
+ },
+ {
+  "id": "cardnum_tok",
+  "template": "cardnum_tok.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 443,
+  "y": 239,
+  "margin": 22,
+  "thresh": 0.75,
+  "box": [
+   439,
+   235,
+   555,
+   253
+  ]
+ },
+ {
+  "id": "cardname_tok",
+  "template": "cardname_tok.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 443,
+  "y": 280,
+  "margin": 22,
+  "thresh": 0.75,
+  "box": [
+   439,
+   275,
+   590,
+   294
+  ]
+ },
+ {
+  "id": "trackid",
+  "template": "trackid.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 441,
+  "y": 181,
+  "margin": 20,
+  "thresh": 0.75,
+  "box": [
+   439,
+   181,
+   529,
+   193
+  ]
+ },
+ {
+  "id": "pay_id",
+  "template": "pay_id.png",
+  "f1": 3698,
+  "f2": 4033,
+  "x": 379,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   376,
+   15,
+   474,
+   31
+  ]
+ },
+ {
+  "id": "rtr_id",
+  "template": "rtr_id.png",
+  "f1": 4034,
+  "f2": 4150,
+  "x": 361,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   363,
+   15,
+   455,
+   31
+  ]
+ },
+ {
+  "id": "c_name",
+  "template": "c_name.png",
+  "f1": 4034,
+  "f2": 4150,
+  "x": 449,
+  "y": 215,
+  "margin": 20,
+  "thresh": 0.75,
+  "box": [
+   447,
+   217,
+   512,
+   227
+  ]
+ },
+ {
+  "id": "c_exp",
+  "box": [
+   447,
+   195,
+   512,
+   217
+  ],
+  "template": "c_expval.png",
+  "f1": 4034,
+  "f2": 4150,
+  "x": 448,
+  "y": 196,
+  "margin": 18,
+  "thresh": 0.75
+ },
+ {
+  "id": "tmpuser",
+  "template": "tmpuser.png",
+  "f1": 4151,
+  "f2": 4639,
+  "x": 199,
+  "y": 117,
+  "margin": 20,
+  "thresh": 0.75,
+  "box": [
+   196,
+   114,
+   248,
+   132
+  ]
+ },
+ {
+  "id": "kio_pid",
+  "template": "kio_pid.png",
+  "f1": 4151,
+  "f2": 4639,
+  "x": 357,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   354,
+   15,
+   450,
+   31
+  ]
+ },
+ {
+  "id": "kio_auth",
+  "template": "kio_auth.png",
+  "f1": 4151,
+  "f2": 4639,
+  "x": 566,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   563,
+   15,
+   603,
+   31
+  ]
+ },
+ {
+  "id": "kio_ref",
+  "template": "kio_ref.png",
+  "f1": 4151,
+  "f2": 4639,
+  "x": 627,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   624,
+   15,
+   695,
+   31
+  ]
+ },
+ {
+  "id": "kio_track",
+  "template": "kio_track.png",
+  "f1": 4151,
+  "f2": 4639,
+  "x": 818,
+  "y": 17,
+  "margin": 16,
+  "thresh": 0.72,
+  "box": [
+   804,
+   15,
+   841,
+   31
+  ]
+ }
+]

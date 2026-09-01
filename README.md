@@ -1,10 +1,27 @@
-# Video blurring — SBI netbanking demo
+# Video blurring — SBI netbanking recordings
 
-> This repo also packages the whole problem as a verifiable long-horizon
-> Harbor task — seed video, programmatic verifier with per-occurrence
-> coverage / visibility / blur-size measures, oracle solution, and run
-> report — under
-> [`collinear-candidate/sbi-netbanking-redaction/`](collinear-candidate/sbi-netbanking-redaction).
+Redacts sensitive on-screen information in SBI internet-banking screen
+recordings, and packages each one as a verifiable long-horizon **Harbor
+task** (seed video, programmatic verifier with per-occurrence coverage /
+visibility / blur-size measures, oracle solution, run report).
+
+| video | redacted output | Harbor task |
+| --- | --- | --- |
+| Transfer of Savings Account demo (2m13s) | [`output/sbi_transfer_demo_blurred.mp4`](output/sbi_transfer_demo_blurred.mp4) | [`collinear-candidate/sbi-netbanking-redaction/`](collinear-candidate/sbi-netbanking-redaction) |
+| Internet-banking registration walkthrough (3m06s) | [`output/sbi_registration_redacted.mp4`](output/sbi_registration_redacted.mp4) | [`collinear-candidate/sbi-registration-redaction/`](collinear-candidate/sbi-registration-redaction) |
+
+The two recordings need different machinery, which is why they make two
+distinct tasks. The transfer demo **pans, scrolls and changes browser
+zoom**, so its pipeline tracks each string across scales
+(`detect.py` + `blur.py`). The registration walkthrough navigates between
+**static pages** but shows *live, unmasked* data — including card values
+the payment gateway silently replaces with hashed tokens mid-page — so its
+pipeline declares each value's position and asks, per frame, whether it is
+on screen (`detect_static.py` + `blur.py`).
+
+---
+
+## Transfer of Savings Account demo
 
 Redacts sensitive on-screen information in the SBI "RINB – Transfer of
 Savings Account" netbanking demo screen recording (854x480, 2m13s).
@@ -64,4 +81,51 @@ python3 blur_pipeline/blur.py   --video input.mp4 --hits hits.json \
     --filters sbi_demo_filters.json --extra sbi_demo_extra.json \
     --clamp-end 123.03 --out blurred.mp4
 python3 blur_pipeline/verify.py --video blurred.mp4 --templates templates/ --thresh 0.70
+```
+
+---
+
+## Internet-banking registration walkthrough
+
+The redacted video is committed at
+[`output/sbi_registration_redacted.mp4`](output/sbi_registration_redacted.mp4).
+
+### What gets redacted
+
+| Item | Where it appears |
+| --- | --- |
+| Account number, CIF number, branch code, registered mobile number | User Driven Registration form |
+| Card number, cardholder's name, card expiry, Track ID | payment gateway |
+| The hashed/tokenized card number and cardholder name the gateway substitutes in-place after Submit | payment gateway, during "Processing… Please wait" |
+| Card expiry month/year and cardholder's name | payment confirmation page |
+| Temporary internet-banking username | create-password page |
+| Transaction identifiers in URL query strings (payment id, `auth`, `ref`, `trackid`) | payment and post-payment redirect pages |
+
+Left legible on purpose: the site's own masked card number
+(`************ 4567`) and PIN dots, both captcha images, the readable
+parts of URLs (scheme, domain, path, `result=CAPTURED`, `postdate=…`),
+and all labels, hints, merchant and amount.
+
+### How it works
+
+The pages here don't move, so the hard part is knowing *what* to cover and
+*exactly when* — including content that changes while a page stays up:
+
+1. **`detect_static.py`** — each value is declared once in
+   [`sbi_reg_items.json`](sbi_reg_items.json) with its template crop, the
+   page's frame window, and where it sits. The detector matches it in a
+   small window around that position on **every** frame, giving frame-exact
+   appearance/disappearance times (a form filled in one spliced frame, a
+   field re-rendered as a hash after Submit). Every item matched at
+   score 1.00 with zero position drift, confirming the pages are static.
+2. **`blur.py`** — renders those intervals (reused from the demo pipeline;
+   detection output is passed as `--extra`, with an empty `--hits`).
+
+```bash
+python3 blur_pipeline/detect_static.py --video input.mp4 \
+    --templates templates/ --spec sbi_reg_items.json \
+    --out intervals.json --report report.json
+echo '[]' > empty_hits.json
+python3 blur_pipeline/blur.py --video input.mp4 --hits empty_hits.json \
+    --extra intervals.json --out redacted.mp4
 ```

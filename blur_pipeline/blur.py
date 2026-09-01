@@ -118,16 +118,25 @@ def build_schedule(hits, W, H, cuts=()):
                     emit(h["t"] - ASSOC, h["t"] + ASSOC, h["t"], r)
             for a, b in zip(tr, tr[1:]):
                 rects_a, rects_b = hit_rects(a, W, H), hit_rects(b, W, H)
-                if b["t"] - a["t"] <= GAP_FILL and seg(a["t"]) == seg(b["t"]):
+                dt = b["t"] - a["t"]
+                if dt <= 2 * ASSOC:
+                    continue  # consecutive dense hits; ASSOC windows overlap
+                if (dt <= GAP_FILL and seg(a["t"]) == seg(b["t"])
+                        and iou(rects_a[0], rects_b[0]) >= 0.4):
+                    # a hole at a stable location = occlusion (e.g. the
+                    # cursor parked on the text): bridge with the union
                     for ra, rb in zip(rects_a, rects_b):
                         union = (min(ra[0], rb[0]), min(ra[1], rb[1]),
                                  max(ra[2], rb[2]), max(ra[3], rb[3]))
                         emit(a["t"], b["t"], a["t"], union)
-                else:  # run boundary inside the track
+                else:
+                    # the location moved across the hole, or a run boundary:
+                    # pad each side at its own position only, so blur never
+                    # smears across content that shifted
                     for ra in rects_a:
-                        emit(a["t"], a["t"] + EDGE_EXT, a["t"], ra)
+                        emit(a["t"], a["t"] + min(EDGE_EXT, dt), a["t"], ra)
                     for rb in rects_b:
-                        emit(b["t"] - EDGE_EXT, b["t"], b["t"], rb)
+                        emit(b["t"] - min(EDGE_EXT, dt), b["t"], b["t"], rb)
             for r in hit_rects(tr[0], W, H):
                 emit(tr[0]["t"] - EDGE_EXT, tr[0]["t"], tr[0]["t"], r)
             for r in hit_rects(tr[-1], W, H):

@@ -1,9 +1,11 @@
 [
   {
-    "comment": "t=43-47 zoom transition: the home-branch row rides under the caption bar where templates cannot match; these tight bands follow the measured position of the branch cell (zoom-in, clipped static hold, zoom-out exit). The moving row during 46.03-46.6 is covered by detection hits.",
-    "t1": 42.9, "t2": 43.45, "x1": 300, "y1": 335, "x2": 485, "y2": 385
+    "comment": "t=43-47 zoom transition: the home-branch row rides under the caption bar where templates cannot match; keyframed slices follow the measured position of the branch cell through the zoom-in (43.0-43.6), the clipped static hold, and the zoom-out exit. Positions measured frame-by-frame from this video.",
+    "t1": 42.9,  "t2": 43.15, "x1": 321, "y1": 337, "x2": 480, "y2": 377
   },
-  { "t1": 43.3,  "t2": 43.75, "x1": 222, "y1": 393, "x2": 415, "y2": 437 },
-  { "t1": 43.6,  "t2": 46.15, "x1": 198, "y1": 413, "x2": 398, "y2": 452 },
+  { "t1": 43.10, "t2": 43.32, "x1": 297, "y1": 350, "x2": 464, "y2": 395 },
+  { "t1": 43.28, "t2": 43.47, "x1": 255, "y1": 372, "x2": 445, "y2": 420 },
+  { "t1": 43.43, "t2": 43.62, "x1": 225, "y1": 396, "x2": 415, "y2": 440 },
+  { "t1": 43.58, "t2": 46.15, "x1": 198, "y1": 413, "x2": 398, "y2": 452 },
   { "t1": 46.55, "t2": 46.85, "x1": 372, "y1": 316, "x2": 600, "y2": 368 }
 ]

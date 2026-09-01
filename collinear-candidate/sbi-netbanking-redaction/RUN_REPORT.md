@@ -21,8 +21,10 @@ keyframing) passes, as long as the measured outcomes hold.
 ## Verifier design (tests/grade.py — fully programmatic, no LLM judging)
 
 Ground truth (`tests/ground_truth.json`) holds 21 sensitive instances with
-351 (time, rect, scale) samples — 45 tagged *hard* (mid-zoom, mid-scroll,
-caption-clipped, cursor-occluded) — plus 86 must-stay-visible samples for
+358 (time, rect, scale) samples — 52 tagged *hard* (mid-zoom, mid-scroll,
+caption-clipped, cursor-occluded, and single frames at page-swap
+boundaries where the new page's content renders one frame before a
+detection pass can lock on) — plus 86 must-stay-visible samples for
 pre-masked fields and UI landmarks. Every sample was validated against the
 original video (sensitive samples demonstrably match there at NCC ≥ 0.70;
 visibility samples at ≥ 0.82).
@@ -45,17 +47,21 @@ index-aligned; there is no seek nondeterminism.
 
 **Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95.
 
-## Verifier validation (run on 2026-08-31, this container)
+## Verifier validation (run on 2026-09-01, this container)
 
 | candidate | overall | functional | constraint | robustness | artifact |
 |---|---|---|---|---|---|
-| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 | 1.0 |
-| unmodified original video | 0.4157 | 0.0185 | 1.0 | 0.0222 | 0.7 |
-| cheat: blur the entire frame | 0.6987 | 1.0 | 0.0076 | 1.0 | 0.9762 |
+| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 (52/52 hard) | 1.0 |
+| near-miss: oracle w/o frame-exact cut placement | 0.9640 | 0.9605 | 1.0 | 0.8654 (45/52) | 1.0 |
+| unmodified original video | 0.4153 | 0.0185 | 1.0 | 0.0192 | 0.7 |
+| cheat: blur the entire frame | 0.6986 | 1.0 | 0.0076 | 1.0 | 0.9755 |
 
-The two failure directions (do nothing / blur everything) are cleanly
-rejected, and neither shallow strategy can reach the pass bar; only
-targeted, temporally-correct redaction passes.
+The two shallow directions (do nothing / blur everything) are cleanly
+rejected, and the near-miss row shows the verifier resolves even
+single-frame leaks at page-swap boundaries — an earlier oracle iteration
+that placed its temporal cut points one frame off fails the robustness
+criterion. Only targeted, temporally frame-exact redaction reaches the
+pass bar.
 
 ## Oracle solution
 

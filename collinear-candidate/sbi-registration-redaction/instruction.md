@@ -67,12 +67,19 @@ leak.
 - Minimal footprint: at any sampled time, changed pixels outside the
   (dilated) sensitive regions must be under 2% of the frame; per frame,
   total changed area must stay within 12x the active sensitive area.
+- **Neighbour legibility**: the text immediately adjoining each redaction
+  — the field label to its left, the hint or URL parameter to its right,
+  the table row above or below — must be left *pixel-untouched*. A
+  redaction sized to its value clears its neighbours; one that has crept a
+  few pixels outward clips the last letters off a label, the first column
+  off a link, or the browser's search icon, and fails here even though the
+  whole-frame budget above would never notice a handful of pixels.
 - Real obscuring: a covered region must actually be defaced (changed
   pixels ≥ 12% of the text box), not merely perturbed enough to break
   matching.
 
-A run passes when `overall ≥ 0.90` and `functional_correctness ≥ 0.95`
-in the verifier's reward.json.
+A run passes when `overall ≥ 0.90`, `functional_correctness ≥ 0.95` and
+`neighbor_legibility ≥ 0.95` in the verifier's reward.json.
 
 ## Notes
 

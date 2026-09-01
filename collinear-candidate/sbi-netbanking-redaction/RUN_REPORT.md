@@ -33,9 +33,22 @@ Reward (written to /logs/verifier/reward.json):
 
 - `functional_correctness` (0.40): per-instance fraction of samples where
   the sensitive patch no longer matches in place (NCC < 0.60, ±8 px).
-- `constraint_satisfaction` (0.30): half visibility (pre-masked fields and
-  landmarks still match at NCC ≥ 0.80), half over-blur budget (changed
-  pixels outside dilated sensitive rects ≤ 2% of the frame on a 2 s grid).
+- `constraint_satisfaction` (0.30): 0.4 visibility (pre-masked fields and
+  landmarks still match at NCC ≥ 0.80) + 0.3 neighbour legibility + 0.3
+  over-blur budget (changed pixels outside dilated sensitive rects ≤ 2% of
+  the frame on a 2 s grid).
+- `neighbor_legibility` (reported separately, and a pass condition in its
+  own right): 7 probes on the text abutting a redaction — the history
+  table's column headers above the redacted row, the "Link your Aadhaar
+  Number" sidebar item beside it, and the `Savings Account` value,
+  `Branch Code` / `Branch` labels, `Account Transfer from Branch` heading
+  and account number that surround the redacted values on the success
+  page. Each must be left **pixel-untouched** (changed pixels, unsmoothed,
+  threshold 20, tolerance 2% of the probe rect — not NCC, which over a
+  wide crop still scores above 0.80 when a few columns have been blurred
+  away). These sites are exactly where earlier iterations of this pipeline
+  over-blurred, so the measure turns that review feedback into an
+  automatic rejection.
 - `robustness` (0.15): coverage restricted to the 45 hard samples.
 - `artifact_quality` (0.15): container integrity (resolution, frame count,
   audio duration) + blur-size bounds — a covered rect must be genuinely
@@ -45,16 +58,17 @@ Reward (written to /logs/verifier/reward.json):
 Original and candidate are decoded in one lockstep pass, so frames are
 index-aligned; there is no seek nondeterminism.
 
-**Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95.
+**Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95 AND
+neighbor_legibility ≥ 0.95.
 
 ## Verifier validation (run on 2026-09-01, this container)
 
-| candidate | overall | functional | constraint | robustness | artifact |
-|---|---|---|---|---|---|
-| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 (52/52 hard) | 1.0 |
-| near-miss: oracle w/o frame-exact cut placement | 0.9640 | 0.9605 | 1.0 | 0.8654 (45/52) | 1.0 |
-| unmodified original video | 0.4153 | 0.0185 | 1.0 | 0.0192 | 0.7 |
-| cheat: blur the entire frame | 0.6986 | 1.0 | 0.0076 | 1.0 | 0.9755 |
+| candidate | overall | functional | neighbour | constraint | robustness | artifact |
+|---|---|---|---|---|---|---|
+| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 | 1.0 (52/52 hard) | 1.0 |
+| near-miss: oracle w/o frame-exact cut placement | 0.9640 | 0.9605 | 1.0 | 1.0 | 0.8654 (45/52) | 1.0 |
+| unmodified original video | 0.4153 | 0.0185 | 1.0 | 1.0 | 0.0192 | 0.7 |
+| cheat: blur the entire frame | 0.6977 | 1.0 | **0.0** | 0.0045 | 1.0 | 0.9755 |
 
 The two shallow directions (do nothing / blur everything) are cleanly
 rejected, and the near-miss row shows the verifier resolves even

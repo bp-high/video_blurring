@@ -52,9 +52,19 @@ Reward (written to /logs/verifier/reward.json):
 
 - `functional_correctness` (0.40): per-instance fraction of samples where
   the value no longer matches in place (NCC < 0.60, ±8 px).
-- `constraint_satisfaction` (0.30): half visibility (probes still match at
-  NCC ≥ 0.80), half over-blur budget (changed pixels outside dilated
-  sensitive rects ≤ 2% of the frame, on a 2 s grid).
+- `constraint_satisfaction` (0.30): 0.4 visibility (probes still match at
+  NCC ≥ 0.80) + 0.3 neighbour legibility + 0.3 over-blur budget (changed
+  pixels outside dilated sensitive rects ≤ 2% of the frame, on a 2 s grid).
+- `neighbor_legibility` (reported separately, and a pass condition in its
+  own right): 20 probes on the text abutting a redaction — the label left
+  of each field, the hint or URL parameter right of it, the rows above and
+  below on the confirmation page, the browser's search icon beside the
+  last URL parameter. Each must be left **pixel-untouched**: the check is
+  changed pixels (unsmoothed, threshold 20, tolerance 2% of the probe
+  rect), not NCC, because NCC over a wide crop still scores above 0.80
+  when a few columns have been blurred away — which is precisely the
+  defect being hunted. Being pixel-based it also localises the fault: the
+  failing probe names the neighbour that was clipped.
 - `robustness` (0.15): coverage restricted to the 236 hard samples.
 - `artifact_quality` (0.15): container integrity (resolution, frame count,
   audio duration) + blur-size bounds — a covered rect must be genuinely
@@ -64,24 +74,40 @@ Reward (written to /logs/verifier/reward.json):
 Original and candidate are decoded in one lockstep pass, so frames are
 index-aligned; there is no seek nondeterminism.
 
-**Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95.
+**Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95 AND
+neighbor_legibility ≥ 0.95.
 
 ## Verifier validation (run 2026-09-01, this container)
 
-| candidate | overall | functional | constraint | robustness | artifact | verdict |
-|---|---|---|---|---|---|---|
-| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 (236/236) | 1.0 | pass |
-| near-miss: redacts the visible card data, misses the tokenized window | 0.9541 | **0.8947** | 1.0 | 0.9746 (230/236) | 1.0 | **fail** |
-| unmodified original video | 0.4050 | 0.0 | 1.0 | 0.0 | 0.7 | fail |
-| cheat: blur the entire frame | 0.6996 | 1.0 | **0.0** | 1.0 | 0.9976 | fail |
+| candidate | overall | functional | neighbour | constraint | robustness | artifact | verdict |
+|---|---|---|---|---|---|---|---|
+| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 | 1.0 (236/236) | 1.0 | pass |
+| near-miss A: misses the tokenized window | 0.9316 | **0.8947** | 0.75 | 0.925 | 0.9746 | 1.0 | **fail** |
+| near-miss B: complete coverage, boxes a few px oversized | 0.9775 | 1.0 | **0.75** | 0.925 | 1.0 | 1.0 | **fail** |
+| unmodified original video | 0.4050 | 0.0 | 1.0 | 1.0 | 0.0 | 0.7 | fail |
+| cheat: blur the entire frame | 0.6996 | 1.0 | 0.0 | 0.0 | 1.0 | 0.9976 | fail |
 
-The near-miss row is the point of the task. It is a *thorough* solution —
-every value visible on every page is covered, frame-exactly, with no
-over-blur — and it still fails, on exactly the two instances
-(`cardnum_tok`, `cardname_tok`) that only exist for 21 frames after a
-button press. Overall (0.954) even clears the 0.90 line; the
-functional-correctness floor is what rejects it. The two shallow
-directions (do nothing / blur everything) are rejected far more bluntly.
+The two near-miss rows are the point of the task, and they fail on
+different axes:
+
+- **A** covers every value visible on every page, frame-exactly and
+  without over-blur, and still fails — on the two instances
+  (`cardnum_tok`, `cardname_tok`) that exist only for 21 frames after a
+  button press. Its overall (0.932) clears the 0.90 line; the
+  functional-correctness floor rejects it.
+- **B** finds *everything*, including the tokenized window
+  (functional 1.0, robustness 1.0), but its boxes overhang by a few
+  pixels: enough to eat the "is" from "…for Internet Banking is", the
+  first column of a `Help?` link, the `&ref=`/`&postdate=` separators and
+  the browser's search icon. Its overall (0.978) clears 0.90 and its
+  functional score is perfect; only `neighbor_legibility` (0.75) rejects
+  it, and the failing probe ids say exactly which neighbours were clipped.
+
+Both shallow directions (do nothing / blur everything) are rejected far
+more bluntly. Near-miss B is the reason neighbour legibility is a separate
+pass condition rather than a component folded into a weighted average — a
+few stray pixels never move an averaged score enough to matter, but they
+are a real defect in a redaction deliverable.
 
 ## Oracle solution
 

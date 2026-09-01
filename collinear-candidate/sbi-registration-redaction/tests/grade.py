@@ -13,10 +13,20 @@ candidate frames are index-aligned):
   candidate (NCC < COVERED_MAX inside the rect + margin). Mean over
   instances of their per-sample coverage.
 - constraint_satisfaction: (a) pre-censored fields and UI landmarks must
-  still match at their positions (NCC >= VISIBLE_MIN); (b) over-blur
-  budget: on a 2 s grid, changed pixels (|candidate - original| > DIFF_T
-  after light smoothing) outside the dilated active sensitive rects must
-  stay under BUDGET_FRAC of the frame.
+  still match at their positions (NCC >= VISIBLE_MIN); (b) neighbour
+  legibility (see below); (c) over-blur budget: on a 2 s grid, changed
+  pixels (|candidate - original| > DIFF_T after light smoothing) outside
+  the dilated active sensitive rects must stay under BUDGET_FRAC of the
+  frame.
+- neighbor_legibility: the text immediately adjoining each redaction — the
+  field label to its left, the hint or URL parameter to its right, the
+  table row above or below — must still match in place. This is what
+  separates a redaction sized to its value from one that has crept a few
+  pixels into the surrounding page: the over-blur budget is a whole-frame
+  measure and a handful of encroaching pixels never troubles it, whereas
+  clipping the "is" off a label, or the first column of a "Help?" link,
+  fails here. Reported as its own top-level metric so a run can be
+  rejected on it directly.
 - robustness: coverage restricted to samples tagged "hard" (zoom / scroll
   transitions and cursor-occlusion windows).
 - artifact_quality: container integrity (resolution, frame count, audio
@@ -43,6 +53,20 @@ BUDGET_FRAC = 0.02   # allowed off-target changed-pixel fraction per frame
 MIN_COVER = 0.12     # changed mask must cover this much of a covered rect
                      # (text strokes are ~20-30% of a text box on these white
                      # pages; a 1-px defacement that merely breaks NCC is <5%)
+NBR_DIFF_T = 20      # per-pixel threshold for the neighbour check. Computed
+                     # on UNSMOOTHED grayscale: the light blur used elsewhere
+                     # to suppress codec noise spreads an in-box change a
+                     # couple of pixels outward, which would report every
+                     # correctly-sized redaction as touching its neighbour.
+NBR_TOL = 0.02       # changed-pixel fraction tolerated inside a neighbour
+                     # rect. These rects hold text that abuts a redaction but
+                     # must survive untouched, so the expectation is zero
+                     # change and the tolerance only absorbs re-encode noise.
+                     # Checked as changed pixels rather than NCC on purpose:
+                     # NCC over a wide crop still scores >0.80 when a few
+                     # columns are blurred away, which is exactly the failure
+                     # (a label's last letters eaten by an oversized box)
+                     # this measure exists to reject.
 MAX_AREA_X = 12.0    # frame changed-area cap: X * active sensitive area
 MARGIN = 8           # search margin around a ground-truth rect (px)
 
@@ -132,6 +156,7 @@ def main():
     work = {}  # frame_idx -> dict(redact=[(inst,sample)], visible=[...], budget=bool)
     def slot(t):
         return work.setdefault(int(round(t * fps)), dict(redact=[], visible=[],
+                                                         neighbor=[],
                                                          budget=False))
     for inst in gt["redact"]:
         for s in inst["samples"]:
@@ -139,6 +164,9 @@ def main():
     for inst in gt["visible"]:
         for s in inst["samples"]:
             slot(s["t"])["visible"].append((inst, s))
+    for inst in gt.get("neighbors", []):
+        for s in inst["samples"]:
+            slot(s["t"])["neighbor"].append((inst, s))
     t = 1.0
     while t < gv["duration"] - 0.5:
         slot(round(t, 2))["budget"] = True
@@ -158,8 +186,8 @@ def main():
     # ---- lockstep pass over both videos ----
     cap_o = cv2.VideoCapture(args.original)
     cap_c = cv2.VideoCapture(args.candidate)
-    res = dict(cov={}, hard=[0, 0], vis={}, budget=[0, 0], minsz=[0, 0],
-               maxsz=[0, 0])
+    res = dict(cov={}, hard=[0, 0], vis={}, nbr={}, budget=[0, 0],
+               minsz=[0, 0], maxsz=[0, 0])
     idx = 0
     while True:
         ok_o, fr_o = cap_o.read()
@@ -169,12 +197,16 @@ def main():
         w = work.get(idx)
         if w:
             g_c = cv2.cvtColor(fr_c, cv2.COLOR_BGR2GRAY)
-            diff = None
+            diff = raw_diff = None
+            g_o = None
+            if w["redact"] or w["budget"] or w["neighbor"]:
+                g_o = cv2.cvtColor(fr_o, cv2.COLOR_BGR2GRAY)
             if w["redact"] or w["budget"]:
-                a = cv2.GaussianBlur(cv2.cvtColor(fr_o, cv2.COLOR_BGR2GRAY),
-                                     (0, 0), 1.2)
+                a = cv2.GaussianBlur(g_o, (0, 0), 1.2)
                 b = cv2.GaussianBlur(g_c, (0, 0), 1.2)
                 diff = (cv2.absdiff(a, b) > DIFF_T)
+            if w["neighbor"]:
+                raw_diff = (cv2.absdiff(g_o, g_c) > NBR_DIFF_T)
             for inst, s in w["redact"]:
                 sc = probe(g_c, tpl(inst["fixture"]), s["scale"],
                            (s["x"], s["y"]))
@@ -204,6 +236,15 @@ def main():
                 v = res["vis"].setdefault(inst["id"], [0, 0])
                 v[1] += 1
                 v[0] += sc >= VISIBLE_MIN
+            for inst, s in w["neighbor"]:
+                x2n, y2n = min(W, s["x"] + s["w"]), min(H, s["y"] + s["h"])
+                region = raw_diff[s["y"]:y2n, s["x"]:x2n]
+                untouched = region.size > 0 and region.mean() <= NBR_TOL
+                sc = probe(g_c, tpl(inst["fixture"]), s["scale"],
+                           (s["x"], s["y"]))
+                n = res["nbr"].setdefault(inst["id"], [0, 0])
+                n[1] += 1
+                n[0] += bool(untouched and sc >= VISIBLE_MIN)
             if w["budget"]:
                 allowed = np.zeros((H, W), bool)
                 for (x, y, w_, h_) in active_rects(idx / fps):
@@ -221,8 +262,14 @@ def main():
     functional = float(np.mean(list(inst_scores.values()))) if inst_scores else 0.0
     vis_scores = {k: v[0] / v[1] for k, v in res["vis"].items()}
     score_v = float(np.mean(list(vis_scores.values()))) if vis_scores else 0.0
+    nbr_scores = {k: v[0] / v[1] for k, v in res["nbr"].items()}
     score_b = res["budget"][0] / max(1, res["budget"][1])
-    constraint = 0.5 * score_v + 0.5 * score_b
+    if nbr_scores:
+        score_n = float(np.mean(list(nbr_scores.values())))
+        constraint = 0.4 * score_v + 0.3 * score_n + 0.3 * score_b
+    else:
+        score_n = None          # task ships no neighbour probes
+        constraint = 0.5 * score_v + 0.5 * score_b
     robustness = res["hard"][0] / max(1, res["hard"][1])
     integrity = (frames_ok + audio_ok + dur_ok) / 3.0
     min_ok = res["minsz"][0] / max(1, res["minsz"][1])
@@ -235,8 +282,11 @@ def main():
                 constraint_satisfaction=round(constraint, 4),
                 robustness=round(robustness, 4),
                 artifact_quality=round(artifact, 4),
+                neighbor_legibility=(round(score_n, 4)
+                                     if score_n is not None else None),
                 detail=dict(instances={k: round(v, 3) for k, v in inst_scores.items()},
                             visible={k: round(v, 3) for k, v in vis_scores.items()},
+                            neighbors={k: round(v, 3) for k, v in nbr_scores.items()},
                             budget_frames=f"{res['budget'][0]}/{res['budget'][1]}",
                             hard=f"{res['hard'][0]}/{res['hard'][1]}",
                             blur_min_size=f"{res['minsz'][0]}/{res['minsz'][1]}",

@@ -6,10 +6,88 @@
   "frames": 5568,
   "duration": 185.97
  },
+ "pages": [
+  {
+   "name": "intro_logo",
+   "t1": 0.0,
+   "t2": 3.8
+  },
+  {
+   "name": "title_card",
+   "t1": 3.833,
+   "t2": 24.333
+  },
+  {
+   "name": "onlinesbi_home",
+   "t1": 24.367,
+   "t2": 34.2
+  },
+  {
+   "name": "login_landing",
+   "t1": 34.233,
+   "t2": 35.867
+  },
+  {
+   "name": "login_page",
+   "t1": 35.9,
+   "t2": 71.633
+  },
+  {
+   "name": "registration_form",
+   "t1": 71.667,
+   "t2": 90.133
+  },
+  {
+   "name": "otp_page",
+   "t1": 90.167,
+   "t2": 99.533
+  },
+  {
+   "name": "atm_card_choice",
+   "t1": 99.567,
+   "t2": 123.233
+  },
+  {
+   "name": "payment_gateway",
+   "t1": 123.267,
+   "t2": 134.433
+  },
+  {
+   "name": "payment_confirmation",
+   "t1": 134.467,
+   "t2": 138.333
+  },
+  {
+   "name": "create_password",
+   "t1": 138.367,
+   "t2": 154.633
+  },
+  {
+   "name": "registration_success",
+   "t1": 154.667,
+   "t2": 171.2
+  },
+  {
+   "name": "outro_logo",
+   "t1": 171.233,
+   "t2": 174.833
+  },
+  {
+   "name": "outro_links",
+   "t1": 174.867,
+   "t2": 185.567
+  }
+ ],
  "redact": [
   {
    "id": "acct",
    "fixture": "acct.png",
+   "meta": {
+    "label": "Account Number",
+    "category": "account_identifier",
+    "page": "registration_form",
+    "why": "customer's savings account number, shown unmasked"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -331,6 +409,12 @@
   {
    "id": "cif",
    "fixture": "cif.png",
+   "meta": {
+    "label": "CIF Number",
+    "category": "account_identifier",
+    "page": "registration_form",
+    "why": "bank-wide customer identification number"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -652,6 +736,12 @@
   {
    "id": "branch",
    "fixture": "branch.png",
+   "meta": {
+    "label": "Branch Code",
+    "category": "account_identifier",
+    "page": "registration_form",
+    "why": "home branch of the account"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -973,6 +1063,12 @@
   {
    "id": "mobile",
    "fixture": "mobile.png",
+   "meta": {
+    "label": "Registered Mobile Number",
+    "category": "contact_identifier",
+    "page": "registration_form",
+    "why": "mobile number registered against the account"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -1294,6 +1390,12 @@
   {
    "id": "cardnum",
    "fixture": "cardnum.png",
+   "meta": {
+    "label": "Card Number (PAN)",
+    "category": "cardholder_data",
+    "page": "payment_gateway",
+    "why": "debit card primary account number, typed in full"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -1354,6 +1456,12 @@
   {
    "id": "expiry",
    "fixture": "expiry.png",
+   "meta": {
+    "label": "Card expiry (Valid Thru)",
+    "category": "cardholder_data",
+    "page": "payment_gateway",
+    "why": "card expiry month/year"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -1432,6 +1540,12 @@
   {
    "id": "cardname",
    "fixture": "cardname.png",
+   "meta": {
+    "label": "Cardholder's Name",
+    "category": "personal_name",
+    "page": "payment_gateway",
+    "why": "name of the card holder"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -1492,6 +1606,12 @@
   {
    "id": "cardnum_tok",
    "fixture": "cardnum_tok.png",
+   "meta": {
+    "label": "Card Number (tokenized)",
+    "category": "cardholder_data_derived",
+    "page": "payment_gateway",
+    "why": "hashed PAN the gateway substitutes in-place after Submit"
+   },
    "samples": [
     {
      "t": 133.7667,
@@ -1525,6 +1645,12 @@
   {
    "id": "cardname_tok",
    "fixture": "cardname_tok.png",
+   "meta": {
+    "label": "Cardholder's Name (tokenized)",
+    "category": "personal_name_derived",
+    "page": "payment_gateway",
+    "why": "hashed cardholder name substituted after Submit"
+   },
    "samples": [
     {
      "t": 133.7667,
@@ -1556,275 +1682,14 @@
    ]
   },
   {
-   "id": "trackid",
-   "fixture": "trackid.png",
-   "samples": [
-    {
-     "t": 123.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 123.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 124.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 124.4667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 124.8667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 125.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 125.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 126.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 126.4667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 126.8667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 127.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 127.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 128.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 128.4667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 128.8667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 129.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 129.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 130.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 130.4667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 130.8667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 131.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 131.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 132.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 132.4667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 132.8667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 133.2667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 133.6667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 134.0667,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": false
-    },
-    {
-     "t": 134.4333,
-     "x": 441,
-     "y": 181,
-     "w": 86,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    }
-   ]
-  },
-  {
    "id": "pay_id",
    "fixture": "pay_id.png",
+   "meta": {
+    "label": "PaymentID (URL)",
+    "category": "transaction_identifier",
+    "page": "payment_gateway",
+    "why": "gateway payment session id in the address bar"
+   },
    "samples": [
     {
      "t": 123.2667,
@@ -2092,6 +1957,12 @@
   {
    "id": "rtr_id",
    "fixture": "rtr_id.png",
+   "meta": {
+    "label": "PaymentID (URL)",
+    "category": "transaction_identifier",
+    "page": "payment_confirmation",
+    "why": "gateway payment session id in the address bar"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -2197,6 +2068,12 @@
   {
    "id": "c_name",
    "fixture": "c_name.png",
+   "meta": {
+    "label": "Cardholder's Name",
+    "category": "personal_name",
+    "page": "payment_confirmation",
+    "why": "name of the card holder"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -2302,6 +2179,12 @@
   {
    "id": "c_exp",
    "fixture": "c_expval.png",
+   "meta": {
+    "label": "Card expiry (Expiration Month/Year)",
+    "category": "cardholder_data",
+    "page": "payment_confirmation",
+    "why": "card expiry month/year"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -2407,6 +2290,12 @@
   {
    "id": "tmpuser",
    "fixture": "tmpuser.png",
+   "meta": {
+    "label": "Temporary internet-banking username",
+    "category": "credential",
+    "page": "create_password",
+    "why": "bank-issued username for first login"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -2791,6 +2680,12 @@
   {
    "id": "kio_pid",
    "fixture": "kio_pid.png",
+   "meta": {
+    "label": "paymentId (URL)",
+    "category": "transaction_identifier",
+    "page": "create_password",
+    "why": "gateway payment id on the post-payment redirect"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -3175,6 +3070,12 @@
   {
    "id": "kio_auth",
    "fixture": "kio_auth.png",
+   "meta": {
+    "label": "auth code (URL)",
+    "category": "transaction_identifier",
+    "page": "create_password",
+    "why": "card authorization code on the redirect URL"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -3559,6 +3460,12 @@
   {
    "id": "kio_ref",
    "fixture": "kio_ref.png",
+   "meta": {
+    "label": "ref (URL)",
+    "category": "transaction_identifier",
+    "page": "create_password",
+    "why": "transaction reference on the redirect URL"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -3934,390 +3841,6 @@
      "x": 627,
      "y": 17,
      "w": 66,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    }
-   ]
-  },
-  {
-   "id": "kio_track",
-   "fixture": "kio_track.png",
-   "samples": [
-    {
-     "t": 138.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 138.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 139.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 139.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 139.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 140.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 140.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 141.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 141.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 141.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 142.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 142.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 143.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 143.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 143.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 144.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 144.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 145.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 145.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 145.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 146.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 146.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 147.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 147.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 147.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 148.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 148.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 149.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 149.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 149.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 150.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 150.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 151.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 151.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 151.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 152.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 152.7667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 153.1667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 153.5667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 153.9667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 154.3667,
-     "x": 818,
-     "y": 17,
-     "w": 28,
-     "h": 12,
-     "scale": 1.0,
-     "hard": true
-    },
-    {
-     "t": 154.6333,
-     "x": 818,
-     "y": 17,
-     "w": 28,
      "h": 12,
      "scale": 1.0,
      "hard": true
@@ -4329,6 +3852,10 @@
   {
    "id": "v_masked_pan",
    "fixture": "v_masked_pan.png",
+   "meta": {
+    "label": "Card number, site-masked (************ 4567)",
+    "reason": "the site already masks it; redacting it again destroys demo content for no privacy gain"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -4367,6 +3894,10 @@
   {
    "id": "v_pin_dots",
    "fixture": "v_pin_dots.png",
+   "meta": {
+    "label": "PIN, shown as dots",
+    "reason": "already masked by the site"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -4405,6 +3936,10 @@
   {
    "id": "v_captcha_reg",
    "fixture": "v_captcha_reg.png",
+   "meta": {
+    "label": "Captcha challenge image (registration form)",
+    "reason": "a challenge image, not customer data"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -4483,6 +4018,10 @@
   {
    "id": "v_captcha_pay",
    "fixture": "v_captcha_pay.png",
+   "meta": {
+    "label": "Captcha challenge image (payment page)",
+    "reason": "a challenge image, not customer data"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -4513,6 +4052,10 @@
   {
    "id": "v_lbl_acct",
    "fixture": "v_lbl_acct.png",
+   "meta": {
+    "label": "'Account Number' field label",
+    "reason": "page furniture"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -4631,6 +4174,10 @@
   {
    "id": "v_hint_acct",
    "fixture": "v_hint_acct.png",
+   "meta": {
+    "label": "Account-number hint text",
+    "reason": "page furniture"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -4749,6 +4296,10 @@
   {
    "id": "v_lbl_branch",
    "fixture": "v_lbl_branch.png",
+   "meta": {
+    "label": "Branch-code hint text",
+    "reason": "page furniture"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -4867,6 +4418,10 @@
   {
    "id": "v_prefix91",
    "fixture": "v_prefix91.png",
+   "meta": {
+    "label": "'91' country prefix box",
+    "reason": "a country code, not the subscriber number"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -4985,6 +4540,10 @@
   {
    "id": "v_country",
    "fixture": "v_country.png",
+   "meta": {
+    "label": "Country dropdown value ('India')",
+    "reason": "not identifying"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -5103,6 +4662,10 @@
   {
    "id": "v_amount",
    "fixture": "v_amount.png",
+   "meta": {
+    "label": "Billing amount (Rs 1.00)",
+    "reason": "merchant billing info shown by the demo"
+   },
    "samples": [
     {
      "t": 123.2667,
@@ -5205,6 +4768,10 @@
   {
    "id": "v_merchant",
    "fixture": "v_merchant.png",
+   "meta": {
+    "label": "Merchant name (STATE BANK GROUP)",
+    "reason": "merchant billing info shown by the demo"
+   },
    "samples": [
     {
      "t": 123.2667,
@@ -5307,6 +4874,10 @@
   {
    "id": "v_help",
    "fixture": "v_help.png",
+   "meta": {
+    "label": "'Help?' link on the expiry row",
+    "reason": "page furniture"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -5337,6 +4908,10 @@
   {
    "id": "v_url_result",
    "fixture": "v_url_result.png",
+   "meta": {
+    "label": "URL 'result=CAPTURED&auth=' text",
+    "reason": "parameter names and a non-identifying status value"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -5479,6 +5054,10 @@
   {
    "id": "v_url_post",
    "fixture": "v_url_post.png",
+   "meta": {
+    "label": "URL '&postdate=0715&trackid=' text",
+    "reason": "parameter names and a date fragment"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -5621,6 +5200,10 @@
   {
    "id": "v_tmpuser_lbl",
    "fixture": "v_tmpuser_lbl.png",
+   "meta": {
+    "label": "'Temporary Username for Internet Banking is' label",
+    "reason": "page furniture"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -5763,6 +5346,10 @@
   {
    "id": "v_pay_domain",
    "fixture": "v_pay_domain.png",
+   "meta": {
+    "label": "Payment gateway scheme/domain/path",
+    "reason": "tells the viewer which site they are on; not identifying"
+   },
    "samples": [
     {
      "t": 123.2667,
@@ -5861,12 +5448,267 @@
      "scale": 1.0
     }
    ]
+  },
+  {
+   "id": "v_trackid",
+   "fixture": "v_trackid.png",
+   "meta": {
+    "label": "Track ID (000072559915072015)",
+    "reason": "the merchant's own order reference shown in the Billing Information panel alongside Merchant/Website/Amount; it identifies an order, not the customer"
+   },
+   "samples": [
+    {
+     "t": 123.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 124.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 125.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 126.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 127.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 128.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 129.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 130.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 131.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 132.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 133.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 134.2667,
+     "x": 441,
+     "y": 181,
+     "w": 86,
+     "h": 12,
+     "scale": 1.0
+    }
+   ]
+  },
+  {
+   "id": "v_url_trackid",
+   "fixture": "v_url_trackid.png",
+   "meta": {
+    "label": "URL 'trackid=' value",
+    "reason": "same merchant order reference as the Track ID field"
+   },
+   "samples": [
+    {
+     "t": 138.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 139.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 140.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 141.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 142.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 143.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 144.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 145.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 146.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 147.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 148.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 149.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 150.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 151.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 152.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 153.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    },
+    {
+     "t": 154.3667,
+     "x": 818,
+     "y": 17,
+     "w": 28,
+     "h": 12,
+     "scale": 1.0
+    }
+   ]
   }
  ],
  "neighbors": [
   {
    "id": "n_acct_hint",
    "fixture": "n_acct_hint.png",
+   "meta": {
+    "label": "n_acct_hint"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -5985,6 +5827,9 @@
   {
    "id": "n_cif_hint",
    "fixture": "n_cif_hint.png",
+   "meta": {
+    "label": "n_cif_hint"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -6103,6 +5948,9 @@
   {
    "id": "n_branch_hint",
    "fixture": "n_branch_hint.png",
+   "meta": {
+    "label": "n_branch_hint"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -6221,6 +6069,9 @@
   {
    "id": "n_mobile_hint",
    "fixture": "n_mobile_hint.png",
+   "meta": {
+    "label": "n_mobile_hint"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -6339,6 +6190,9 @@
   {
    "id": "n_mobile_91",
    "fixture": "n_mobile_91.png",
+   "meta": {
+    "label": "n_mobile_91"
+   },
    "samples": [
     {
      "t": 76.5667,
@@ -6457,6 +6311,9 @@
   {
    "id": "n_cardnum_lbl",
    "fixture": "n_cardnum_lbl.png",
+   "meta": {
+    "label": "n_cardnum_lbl"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -6487,6 +6344,9 @@
   {
    "id": "n_name_lbl",
    "fixture": "n_name_lbl.png",
+   "meta": {
+    "label": "n_name_lbl"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -6517,6 +6377,9 @@
   {
    "id": "n_expiry_help",
    "fixture": "n_expiry_help.png",
+   "meta": {
+    "label": "n_expiry_help"
+   },
    "samples": [
     {
      "t": 131.9667,
@@ -6545,212 +6408,11 @@
    ]
   },
   {
-   "id": "n_track_lbl",
-   "fixture": "n_track_lbl.png",
-   "samples": [
-    {
-     "t": 123.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 124.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 125.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 126.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 127.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 128.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 129.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 130.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 131.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 132.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 133.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    },
-    {
-     "t": 134.2667,
-     "x": 355,
-     "y": 182,
-     "w": 36,
-     "h": 11,
-     "scale": 1.0
-    }
-   ]
-  },
-  {
-   "id": "n_amount_row",
-   "fixture": "n_amount_row.png",
-   "samples": [
-    {
-     "t": 123.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 124.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 125.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 126.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 127.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 128.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 129.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 130.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 131.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 132.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 133.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    },
-    {
-     "t": 134.2667,
-     "x": 441,
-     "y": 172,
-     "w": 40,
-     "h": 10,
-     "scale": 1.0
-    }
-   ]
-  },
-  {
    "id": "n_payid_lbl",
    "fixture": "n_payid_lbl.png",
+   "meta": {
+    "label": "n_payid_lbl"
+   },
    "samples": [
     {
      "t": 123.2667,
@@ -6853,6 +6515,9 @@
   {
    "id": "n_rtr_right",
    "fixture": "n_rtr_right.png",
+   "meta": {
+    "label": "n_rtr_right"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -6891,6 +6556,9 @@
   {
    "id": "n_conf_lbls",
    "fixture": "n_conf_lbls.png",
+   "meta": {
+    "label": "n_conf_lbls"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -6929,6 +6597,9 @@
   {
    "id": "n_conf_pan",
    "fixture": "n_conf_pan.png",
+   "meta": {
+    "label": "n_conf_pan"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -6967,6 +6638,9 @@
   {
    "id": "n_conf_pin",
    "fixture": "n_conf_pin.png",
+   "meta": {
+    "label": "n_conf_pin"
+   },
    "samples": [
     {
      "t": 134.4667,
@@ -7005,6 +6679,9 @@
   {
    "id": "n_tmpuser_is",
    "fixture": "n_tmpuser_is.png",
+   "meta": {
+    "label": "n_tmpuser_is"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -7147,6 +6824,9 @@
   {
    "id": "n_kio_result",
    "fixture": "n_kio_result.png",
+   "meta": {
+    "label": "n_kio_result"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -7289,6 +6969,9 @@
   {
    "id": "n_kio_ref_lbl",
    "fixture": "n_kio_ref_lbl.png",
+   "meta": {
+    "label": "n_kio_ref_lbl"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -7431,6 +7114,9 @@
   {
    "id": "n_kio_post",
    "fixture": "n_kio_post.png",
+   "meta": {
+    "label": "n_kio_post"
+   },
    "samples": [
     {
      "t": 138.3667,
@@ -7573,6 +7259,9 @@
   {
    "id": "n_kio_mag",
    "fixture": "n_kio_mag.png",
+   "meta": {
+    "label": "n_kio_mag"
+   },
    "samples": [
     {
      "t": 138.3667,

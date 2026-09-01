@@ -24,16 +24,16 @@ On the payment gateway and its confirmation page:
 
 5. Card Number, 6. Cardholder's Name, 7. Card expiry (Valid Thru month
    and year, and the Expiration Month / Expiration Year rows on the
-   confirmation page), 8. Track ID.
+   confirmation page).
 
 On the create-password page:
 
-9. The Temporary Username issued for internet banking.
+8. The Temporary Username issued for internet banking.
 
 Anywhere they appear in the browser's address bar:
 
-10. Transaction identifiers in URL query strings — the payment id, and the
-    `auth`, `ref` and `trackid` values on the post-payment redirect URL.
+9. Transaction identifiers in URL query strings — the payment id, and the
+    `auth` and `ref` values on the post-payment redirect URL.
 
 **Inspect the whole timeline, not a sample of it.** Values here appear and
 disappear on a single frame, and at least one field's *content changes*
@@ -46,10 +46,15 @@ leak.
 - Values the site itself already masks: the confirmation page's masked
   card number (`************ 4567`) and the PIN dots. They carry no
   recoverable data — leave them legible.
+- The **Track ID** in the Billing Information panel, and the matching
+  `trackid=` value in the redirect URL. That is the merchant's own order
+  reference, displayed beside Merchant / Website / Amount as part of what
+  the demo is showing; it identifies an order, not the customer. Blurring
+  it is over-redaction and is scored as such.
 - The captcha challenge images on the registration form and the payment
   page.
 - The non-identifying parts of URLs: scheme, domain, path, and the
-  `result=CAPTURED` and `postdate=…` parameters.
+  `result=CAPTURED`, `postdate=…` and `trackid=…` parameters.
 - All other page content: field labels, hint text in parentheses, the
   billing merchant and amount, buttons, links, and the browser chrome.
   Redaction must not appear on a page before its sensitive value does, or
@@ -87,6 +92,12 @@ A run passes when `overall ≥ 0.90`, `functional_correctness ≥ 0.95` and
   No network access is available or needed.
 - The deliverable is the video at `/app/output/redacted.mp4`. Intermediate
   files may go under `/app/work/`.
+- Alongside the reward, the verifier writes `analysis.json` and
+  `analysis.md` to the log directory: the inventory of what counts as
+  sensitive here (and what deliberately does not), a page-by-page state
+  timeline of which values were expected on screen and what happened to
+  each, and one finding per defect naming the item, the failure mode and
+  the times.
 - Verify your own output before finishing. The failure modes that matter
   are occurrences you never found, occurrences that survive for a few
   frames at a page change, and collateral blur on content that must stay

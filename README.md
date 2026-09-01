@@ -10,6 +10,15 @@ visibility / blur-size measures, oracle solution, run report).
 | Transfer of Savings Account demo (2m13s) | [`output/sbi_transfer_demo_blurred.mp4`](output/sbi_transfer_demo_blurred.mp4) | [`collinear-candidate/sbi-netbanking-redaction/`](collinear-candidate/sbi-netbanking-redaction) |
 | Internet-banking registration walkthrough (3m06s) | [`output/sbi_registration_redacted.mp4`](output/sbi_registration_redacted.mp4) | [`collinear-candidate/sbi-registration-redaction/`](collinear-candidate/sbi-registration-redaction) |
 
+Both tasks share one programmatic verifier. Besides scoring, it writes an
+`analysis.md` / `analysis.json` per run: an inventory of what counts as
+PII in that video (with category and rationale) and what deliberately does
+not, a page-by-page **state timeline** of which values were expected on
+screen and what the candidate did with each, and one finding per defect
+typed by failure mode (`MISSED`, `PARTIAL`, `WEAK`, `OVER-REDACTED`,
+`ENCROACHED`, `OVER-BLUR`) — so a model run can be analysed without
+re-watching the video.
+
 The two recordings need different machinery, which is why they make two
 distinct tasks. The transfer demo **pans, scrolls and changes browser
 zoom**, so its pipeline tracks each string across scales
@@ -95,16 +104,19 @@ The redacted video is committed at
 | Item | Where it appears |
 | --- | --- |
 | Account number, CIF number, branch code, registered mobile number | User Driven Registration form |
-| Card number, cardholder's name, card expiry, Track ID | payment gateway |
+| Card number, cardholder's name, card expiry | payment gateway |
 | The hashed/tokenized card number and cardholder name the gateway substitutes in-place after Submit | payment gateway, during "Processing… Please wait" |
 | Card expiry month/year and cardholder's name | payment confirmation page |
 | Temporary internet-banking username | create-password page |
-| Transaction identifiers in URL query strings (payment id, `auth`, `ref`, `trackid`) | payment and post-payment redirect pages |
+| Transaction identifiers in URL query strings (payment id, `auth`, `ref`) | payment and post-payment redirect pages |
 
 Left legible on purpose: the site's own masked card number
 (`************ 4567`) and PIN dots, both captcha images, the readable
-parts of URLs (scheme, domain, path, `result=CAPTURED`, `postdate=…`),
-and all labels, hints, merchant and amount.
+parts of URLs (scheme, domain, path, `result=CAPTURED`, `postdate=…`,
+`trackid=…`), all labels, hints, merchant and amount — and the **Track
+ID**, which is the merchant's own order reference shown beside Merchant /
+Website / Amount: it identifies an order, not the customer, so redacting
+it counts as over-redaction.
 
 ### How it works
 

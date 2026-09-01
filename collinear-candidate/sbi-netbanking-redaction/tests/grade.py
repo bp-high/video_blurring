@@ -46,6 +46,9 @@ import sys
 import cv2
 import numpy as np
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _analysis
+
 COVERED_MAX = 0.60   # sensitive text counts as covered below this NCC
 VISIBLE_MIN = 0.80   # visibility probe counts as intact above this NCC
 DIFF_T = 12          # per-pixel |candidate-original| threshold (grayscale)
@@ -187,7 +190,9 @@ def main():
     cap_o = cv2.VideoCapture(args.original)
     cap_c = cv2.VideoCapture(args.candidate)
     res = dict(cov={}, hard=[0, 0], vis={}, nbr={}, budget=[0, 0],
-               minsz=[0, 0], maxsz=[0, 0])
+               minsz=[0, 0], maxsz=[0, 0],
+               # state tracking: when and where each expectation was violated
+               leaks={}, weak={}, vis_bad={}, nbr_bad={}, budget_bad=[])
     idx = 0
     while True:
         ok_o, fr_o = cap_o.read()
@@ -214,6 +219,9 @@ def main():
                 c = res["cov"].setdefault(inst["id"], [0, 0])
                 c[1] += 1
                 c[0] += covered
+                if not covered:
+                    res["leaks"].setdefault(inst["id"], []).append(
+                        round(idx / fps, 3))
                 if s.get("hard"):
                     res["hard"][1] += 1
                     res["hard"][0] += covered
@@ -223,8 +231,11 @@ def main():
                     y2, x2 = min(H, s["y"] + sh), min(W, s["x"] + sw)
                     region = diff[s["y"]:y2, s["x"]:x2]
                     res["minsz"][1] += 1
-                    res["minsz"][0] += region.size > 0 and \
-                        region.mean() >= MIN_COVER
+                    strong = region.size > 0 and region.mean() >= MIN_COVER
+                    res["minsz"][0] += strong
+                    if not strong:
+                        res["weak"].setdefault(inst["id"], []).append(
+                            round(idx / fps, 3))
             if w["redact"]:
                 acts = active_rects(idx / fps)
                 area = sum(w_ * h_ for (_, _, w_, h_) in acts) + 4000
@@ -236,6 +247,9 @@ def main():
                 v = res["vis"].setdefault(inst["id"], [0, 0])
                 v[1] += 1
                 v[0] += sc >= VISIBLE_MIN
+                if sc < VISIBLE_MIN:
+                    res["vis_bad"].setdefault(inst["id"], []).append(
+                        round(idx / fps, 3))
             for inst, s in w["neighbor"]:
                 x2n, y2n = min(W, s["x"] + s["w"]), min(H, s["y"] + s["h"])
                 region = raw_diff[s["y"]:y2n, s["x"]:x2n]
@@ -244,7 +258,11 @@ def main():
                            (s["x"], s["y"]))
                 n = res["nbr"].setdefault(inst["id"], [0, 0])
                 n[1] += 1
-                n[0] += bool(untouched and sc >= VISIBLE_MIN)
+                ok_n = bool(untouched and sc >= VISIBLE_MIN)
+                n[0] += ok_n
+                if not ok_n:
+                    res["nbr_bad"].setdefault(inst["id"], []).append(
+                        round(idx / fps, 3))
             if w["budget"]:
                 allowed = np.zeros((H, W), bool)
                 for (x, y, w_, h_) in active_rects(idx / fps):
@@ -253,7 +271,10 @@ def main():
                             max(0, x - d):x + w_ + d] = True
                 off = int((diff & ~allowed).sum())
                 res["budget"][1] += 1
-                res["budget"][0] += off <= BUDGET_FRAC * W * H
+                within = off <= BUDGET_FRAC * W * H
+                res["budget"][0] += within
+                if not within:
+                    res["budget_bad"].append(round(idx / fps, 3))
         idx += 1
     cap_o.release()
     cap_c.release()
@@ -277,7 +298,7 @@ def main():
     artifact = 0.4 * integrity + 0.3 * min_ok + 0.3 * max_ok
     overall = (0.40 * functional + 0.30 * constraint +
                0.15 * robustness + 0.15 * artifact)
-    finish(dict(overall=round(overall, 4),
+    reward = dict(overall=round(overall, 4),
                 functional_correctness=round(functional, 4),
                 constraint_satisfaction=round(constraint, 4),
                 robustness=round(robustness, 4),
@@ -292,7 +313,18 @@ def main():
                             blur_min_size=f"{res['minsz'][0]}/{res['minsz'][1]}",
                             blur_max_size=f"{res['maxsz'][0]}/{res['maxsz'][1]}",
                             frames_ok=frames_ok, audio_ok=audio_ok,
-                            duration_ok=dur_ok)))
+                            duration_ok=dur_ok))
+    analysis = _analysis.build(gt, res, fps, {
+        k: reward[k] for k in ("overall", "functional_correctness",
+                               "constraint_satisfaction", "robustness",
+                               "artifact_quality", "neighbor_legibility")
+        if reward.get(k) is not None})
+    with open(os.path.join(args.out_dir, "analysis.json"), "w") as f:
+        json.dump(analysis, f, indent=1)
+    with open(os.path.join(args.out_dir, "analysis.md"), "w") as f:
+        f.write(_analysis.to_markdown(analysis, reward))
+    reward["findings"] = analysis["findings"][:12]
+    finish(reward)
 
 
 if __name__ == "__main__":

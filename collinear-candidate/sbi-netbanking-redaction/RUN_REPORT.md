@@ -25,7 +25,9 @@ Ground truth (`tests/ground_truth.json`) holds 21 sensitive instances with
 caption-clipped, cursor-occluded, and single frames at page-swap
 boundaries where the new page's content renders one frame before a
 detection pass can lock on) — plus 86 must-stay-visible samples for
-pre-masked fields and UI landmarks. Every sample was validated against the
+pre-masked fields and UI landmarks, and 83 neighbour samples across 7
+probes. It also carries the recording's 15 page segments, which the
+analysis uses as its state timeline. Every sample was validated against the
 original video (sensitive samples demonstrably match there at NCC ≥ 0.70;
 visibility samples at ≥ 0.82).
 
@@ -49,7 +51,7 @@ Reward (written to /logs/verifier/reward.json):
   away). These sites are exactly where earlier iterations of this pipeline
   over-blurred, so the measure turns that review feedback into an
   automatic rejection.
-- `robustness` (0.15): coverage restricted to the 45 hard samples.
+- `robustness` (0.15): coverage restricted to the 52 hard samples.
 - `artifact_quality` (0.15): container integrity (resolution, frame count,
   audio duration) + blur-size bounds — a covered rect must be genuinely
   defaced (changed pixels ≥ 12% of the text box) and per-frame changed
@@ -57,6 +59,25 @@ Reward (written to /logs/verifier/reward.json):
 
 Original and candidate are decoded in one lockstep pass, so frames are
 index-aligned; there is no seek nondeterminism.
+
+### State tracking and failure analysis
+
+Alongside the reward the verifier writes `analysis.json` and
+`analysis.md`: a **PII inventory** (every sensitive item with its label,
+category, page, rationale and the exact intervals it is on screen, paired
+with a not-PII table explaining what must stay legible and why), a
+**state timeline** (one row per page: how many sensitive values were
+expected there, how many were covered, and the ids of any that leaked,
+neighbours clipped or legible content obscured), and **findings** — one
+line per defect typed by failure mode (`MISSED`, `PARTIAL`, `WEAK`,
+`OVER-REDACTED`, `ENCROACHED`, `OVER-BLUR`) naming the item and times.
+
+Run against the near-miss build below, the findings pinpoint all five
+single-frame boundary leaks without any manual inspection, e.g.
+*"PARTIAL — Home branch name (SANYOGITAGANJ,INDORE) (branch_home#5)
+redacted for 10/11 samples; still readable at 82.567s"* and
+*"PARTIAL — Transfer reference number and its history row (refno#0)
+redacted for 9/11 samples; still readable at 118.267s, 123.033s"*.
 
 **Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95 AND
 neighbor_legibility ≥ 0.95.

@@ -38,15 +38,34 @@ approach passes, provided the measured outcomes hold.
 
 ## Verifier design (tests/grade.py — fully programmatic, no LLM judging)
 
-Ground truth (`tests/ground_truth.json`) holds 19 sensitive instances with
-467 (time, rect, scale) samples — 236 tagged *hard* (the tokenized-card
+Ground truth (`tests/ground_truth.json`) holds 17 sensitive instances with
+396 (time, rect, scale) samples — 192 tagged *hard* (the tokenized-card
 window, every interval's first and last frame, and the URL identifiers) —
-plus 180 must-stay-visible samples across 16 probes (site-masked card
+plus 209 must-stay-visible samples across 18 probes (site-masked card
 number, PIN dots, both captchas, field labels, hint text, merchant and
-amount, the `Help?` link, the readable parts of URLs, the payment-gateway
-domain). Every sample was validated against the original video: sensitive
-samples match there at NCC ≥ 0.75, visibility probes at ≥ 0.82. Zero
-samples were dropped in validation.
+amount, the Track ID and its URL counterpart, the `Help?` link, the
+readable parts of URLs, the payment-gateway domain) and 192 neighbour
+samples across 18 probes. It also carries the recording's 14 page
+segments, which the analysis uses as its state timeline. Every sample was
+validated against the original video: sensitive samples match there at
+NCC ≥ 0.75, visibility and neighbour probes at ≥ 0.82. Zero samples were
+dropped in validation.
+
+### What counts as PII here
+
+The task draws an explicit line, and the verifier scores both sides of it.
+**Sensitive** (redact): account number, CIF, branch code and registered
+mobile; card number, cardholder name and expiry, including the tokenized
+forms the gateway substitutes after Submit; the bank-issued temporary
+username; and the payment/`auth`/`ref` identifiers in URL query strings.
+**Not sensitive** (must stay legible): values the site already masks
+(`************ 4567`, the PIN dots), the captchas, page labels and hints,
+merchant and amount, the readable parts of URLs — and the **Track ID**,
+which is the merchant's own order reference displayed beside Merchant /
+Website / Amount. An earlier iteration of this task redacted Track ID on
+the reasoning that it is a transaction reference; review corrected that —
+it identifies an order, not the customer — so it is now a legibility probe
+and blurring it is scored as over-redaction.
 
 Reward (written to /logs/verifier/reward.json):
 
@@ -65,7 +84,7 @@ Reward (written to /logs/verifier/reward.json):
   when a few columns have been blurred away — which is precisely the
   defect being hunted. Being pixel-based it also localises the fault: the
   failing probe names the neighbour that was clipped.
-- `robustness` (0.15): coverage restricted to the 236 hard samples.
+- `robustness` (0.15): coverage restricted to the 192 hard samples.
 - `artifact_quality` (0.15): container integrity (resolution, frame count,
   audio duration) + blur-size bounds — a covered rect must be genuinely
   defaced (changed pixels ≥ 12% of the text box) and per-frame changed
@@ -74,6 +93,34 @@ Reward (written to /logs/verifier/reward.json):
 Original and candidate are decoded in one lockstep pass, so frames are
 index-aligned; there is no seek nondeterminism.
 
+### State tracking and failure analysis
+
+Alongside the reward the verifier writes `analysis.json` and
+`analysis.md`, so a model run can be analysed without re-watching the
+video:
+
+- **PII inventory** — every sensitive item with its plain-English label,
+  category (`account_identifier`, `cardholder_data`,
+  `cardholder_data_derived`, `personal_name`, `credential`,
+  `transaction_identifier`, …), the page it belongs to, why it is
+  sensitive, and the exact intervals it is on screen. Paired with a
+  **not-PII** table giving, for each thing that must stay legible, the
+  reason it is not redacted.
+- **State timeline** — one row per page of the recording: how many
+  sensitive values were expected on screen there, how many the candidate
+  covered, and the ids of any that leaked, any neighbours it clipped, and
+  any legible content it obscured, with a clean/defect status.
+- **Findings** — one line per defect, typed by failure mode
+  (`MISSED`, `PARTIAL`, `WEAK`, `OVER-REDACTED`, `ENCROACHED`,
+  `OVER-BLUR`), naming the item and the times. The top findings are also
+  copied into reward.json.
+
+The value of this shows on the sibling task: run against the pre-fix
+build of that pipeline, the analysis reports exactly the five
+single-frame boundary leaks by item and timestamp
+(`branch_home#5 … still readable at 82.567s`, `refno#0 … at 118.267s,
+123.033s`, and so on) rather than just a lower number.
+
 **Pass bar:** overall ≥ 0.90 AND functional_correctness ≥ 0.95 AND
 neighbor_legibility ≥ 0.95.
 
@@ -81,30 +128,37 @@ neighbor_legibility ≥ 0.95.
 
 | candidate | overall | functional | neighbour | constraint | robustness | artifact | verdict |
 |---|---|---|---|---|---|---|---|
-| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 | 1.0 (236/236) | 1.0 | pass |
-| near-miss A: misses the tokenized window | 0.9316 | **0.8947** | 0.75 | 0.925 | 0.9746 | 1.0 | **fail** |
-| near-miss B: complete coverage, boxes a few px oversized | 0.9775 | 1.0 | **0.75** | 0.925 | 1.0 | 1.0 | **fail** |
+| oracle output (solution/solve.sh) | **1.0000** | 1.0 | 1.0 | 1.0 | 1.0 (192/192) | 1.0 | pass |
+| near-miss A: misses only the tokenized window | 0.9483 | **0.8824** | 1.0 | 1.0 | 0.9688 | 1.0 | **fail** |
+| composite "plausible model output" | 0.9149 | **0.8824** | **0.7778** | 0.8889 | 0.9688 | 1.0 | **fail** |
 | unmodified original video | 0.4050 | 0.0 | 1.0 | 1.0 | 0.0 | 0.7 | fail |
-| cheat: blur the entire frame | 0.6996 | 1.0 | 0.0 | 0.0 | 1.0 | 0.9976 | fail |
+| cheat: blur the entire frame | 0.6926 | 1.0 | **0.0** | 0.0 | 1.0 | 0.9504 | fail |
 
-The two near-miss rows are the point of the task, and they fail on
-different axes:
+The two near-miss rows are the point of the task, and the analysis output
+is what makes them useful rather than merely low-scoring:
 
 - **A** covers every value visible on every page, frame-exactly and
   without over-blur, and still fails — on the two instances
   (`cardnum_tok`, `cardname_tok`) that exist only for 21 frames after a
-  button press. Its overall (0.932) clears the 0.90 line; the
-  functional-correctness floor rejects it.
-- **B** finds *everything*, including the tokenized window
-  (functional 1.0, robustness 1.0), but its boxes overhang by a few
-  pixels: enough to eat the "is" from "…for Internet Banking is", the
-  first column of a `Help?` link, the `&ref=`/`&postdate=` separators and
-  the browser's search icon. Its overall (0.978) clears 0.90 and its
-  functional score is perfect; only `neighbor_legibility` (0.75) rejects
-  it, and the failing probe ids say exactly which neighbours were clipped.
+  button press. Its overall (0.948) clears the 0.90 line; the
+  functional-correctness floor rejects it, and the findings name the miss
+  precisely: *"MISSED — Card Number (tokenized) (cardnum_tok) was never
+  redacted; readable across 3 sampled frames at 133.767-134.433s"*.
+- The **composite** row is what a plausible model output looks like: it
+  misses the tokenized window, over-redacts the Track ID, and oversizes
+  several boxes. It fails on three axes at once, and the analysis
+  separates them — two `MISSED` findings, two `OVER-REDACTED` findings
+  naming Track ID and the URL `trackid=` value, and four `ENCROACHED`
+  findings naming the clipped neighbours. That is a failure analysis
+  written by the verifier rather than reconstructed by hand.
 
-Both shallow directions (do nothing / blur everything) are rejected far
-more bluntly. Near-miss B is the reason neighbour legibility is a separate
+Both shallow directions are rejected far more bluntly, and their findings
+are equally specific: the unmodified original produces a `MISSED` line per
+sensitive item, while the blur-everything cheat produces `OVER-REDACTED`
+lines naming the billing amount, both captchas, the country dropdown and
+the `Help?` link.
+
+The composite row is also the reason neighbour legibility is a separate
 pass condition rather than a component folded into a weighted average — a
 few stray pixels never move an averaged score enough to matter, but they
 are a real defect in a redaction deliverable.

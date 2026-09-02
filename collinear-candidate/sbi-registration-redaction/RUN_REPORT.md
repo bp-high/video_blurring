@@ -40,9 +40,6 @@ The task is not brittle: any redaction mechanism and any detection approach pass
 
 **Hypothesis formation and verification** are threaded through all three. The agent has to form a theory about what a page contains, test it against frames, and revise. Then it has to re-scan its own output, because every failure mode here is invisible unless you go looking. 
 
-**Evidence that the steps are genuinely separate.** 
-The oracle needs six to eight minutes of compute, and the model run . There is no single command that solves it.
-
 ## Verifier design (tests/grade.py fully programmatic)
 
   

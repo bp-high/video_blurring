@@ -1,0 +1,9 @@
+{
+ "reward": 0.7752,
+ "overall": 0.7752,
+ "functional_correctness": 0.846,
+ "constraint_satisfaction": 0.4767,
+ "robustness": 0.9583,
+ "artifact_quality": 1.0,
+ "neighbor_legibility": 0.2301
+}

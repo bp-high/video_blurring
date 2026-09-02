@@ -1,0 +1,9 @@
+{
+  "id": "2",
+  "subject": "Map sensitive-data regions per time range",
+  "description": "For each place data appears, note the frame range and the on-screen bounding box(es) to blur. Already-masked values (starred card numbers, PIN dots) are left as-is.",
+  "activeForm": "Mapping redaction regions",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

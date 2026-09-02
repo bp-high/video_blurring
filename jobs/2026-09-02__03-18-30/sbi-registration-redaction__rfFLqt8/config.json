@@ -1,0 +1,12 @@
+{
+    "task": {
+        "path": "collinear-candidate/sbi-registration-redaction"
+    },
+    "trial_name": "sbi-registration-redaction__rfFLqt8",
+    "trials_dir": "jobs/2026-09-02__03-18-30",
+    "agent": {
+        "name": "claude-code",
+        "model_name": "anthropic/claude-opus-4-7"
+    },
+    "job_id": "9e484419-89ad-447c-b3a0-0b24a738cdb2"
+}

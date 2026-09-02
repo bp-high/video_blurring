@@ -1,0 +1,9 @@
+{
+  "id": "3",
+  "subject": "Render blurred output with ffmpeg",
+  "description": "Apply cumulative blur regions via ffmpeg filter_complex to /app/output/redacted.mp4, preserving audio.",
+  "activeForm": "Rendering blurred output",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

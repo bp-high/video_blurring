@@ -1,0 +1,936 @@
+{
+ "pii_inventory": [
+  {
+   "id": "acct",
+   "label": "Account Number",
+   "category": "account_identifier",
+   "page": "registration_form",
+   "rationale": "customer's savings account number, shown unmasked",
+   "on_screen": [
+    [
+     76.567,
+     90.133
+    ]
+   ],
+   "samples": 35,
+   "hard_samples": 2
+  },
+  {
+   "id": "cif",
+   "label": "CIF Number",
+   "category": "account_identifier",
+   "page": "registration_form",
+   "rationale": "bank-wide customer identification number",
+   "on_screen": [
+    [
+     76.567,
+     90.133
+    ]
+   ],
+   "samples": 35,
+   "hard_samples": 2
+  },
+  {
+   "id": "branch",
+   "label": "Branch Code",
+   "category": "account_identifier",
+   "page": "registration_form",
+   "rationale": "home branch of the account",
+   "on_screen": [
+    [
+     76.567,
+     90.133
+    ]
+   ],
+   "samples": 35,
+   "hard_samples": 2
+  },
+  {
+   "id": "mobile",
+   "label": "Registered Mobile Number",
+   "category": "contact_identifier",
+   "page": "registration_form",
+   "rationale": "mobile number registered against the account",
+   "on_screen": [
+    [
+     76.567,
+     90.133
+    ]
+   ],
+   "samples": 35,
+   "hard_samples": 2
+  },
+  {
+   "id": "cardnum",
+   "label": "Card Number (PAN)",
+   "category": "cardholder_data",
+   "page": "payment_gateway",
+   "rationale": "debit card primary account number, typed in full",
+   "on_screen": [
+    [
+     131.967,
+     133.733
+    ]
+   ],
+   "samples": 6,
+   "hard_samples": 2
+  },
+  {
+   "id": "expiry",
+   "label": "Card expiry (Valid Thru)",
+   "category": "cardholder_data",
+   "page": "payment_gateway",
+   "rationale": "card expiry month/year",
+   "on_screen": [
+    [
+     131.967,
+     134.433
+    ]
+   ],
+   "samples": 8,
+   "hard_samples": 2
+  },
+  {
+   "id": "cardname",
+   "label": "Cardholder's Name",
+   "category": "personal_name",
+   "page": "payment_gateway",
+   "rationale": "name of the card holder",
+   "on_screen": [
+    [
+     131.967,
+     133.733
+    ]
+   ],
+   "samples": 6,
+   "hard_samples": 2
+  },
+  {
+   "id": "cardnum_tok",
+   "label": "Card Number (tokenized)",
+   "category": "cardholder_data_derived",
+   "page": "payment_gateway",
+   "rationale": "hashed PAN the gateway substitutes in-place after Submit",
+   "on_screen": [
+    [
+     133.767,
+     134.433
+    ]
+   ],
+   "samples": 3,
+   "hard_samples": 3
+  },
+  {
+   "id": "cardname_tok",
+   "label": "Cardholder's Name (tokenized)",
+   "category": "personal_name_derived",
+   "page": "payment_gateway",
+   "rationale": "hashed cardholder name substituted after Submit",
+   "on_screen": [
+    [
+     133.767,
+     134.433
+    ]
+   ],
+   "samples": 3,
+   "hard_samples": 3
+  },
+  {
+   "id": "pay_id",
+   "label": "PaymentID (URL)",
+   "category": "transaction_identifier",
+   "page": "payment_gateway",
+   "rationale": "gateway payment session id in the address bar",
+   "on_screen": [
+    [
+     123.267,
+     134.433
+    ]
+   ],
+   "samples": 29,
+   "hard_samples": 29
+  },
+  {
+   "id": "rtr_id",
+   "label": "PaymentID (URL)",
+   "category": "transaction_identifier",
+   "page": "payment_confirmation",
+   "rationale": "gateway payment session id in the address bar",
+   "on_screen": [
+    [
+     134.467,
+     138.333
+    ]
+   ],
+   "samples": 11,
+   "hard_samples": 11
+  },
+  {
+   "id": "c_name",
+   "label": "Cardholder's Name",
+   "category": "personal_name",
+   "page": "payment_confirmation",
+   "rationale": "name of the card holder",
+   "on_screen": [
+    [
+     134.467,
+     138.333
+    ]
+   ],
+   "samples": 11,
+   "hard_samples": 2
+  },
+  {
+   "id": "c_exp",
+   "label": "Card expiry (Expiration Month/Year)",
+   "category": "cardholder_data",
+   "page": "payment_confirmation",
+   "rationale": "card expiry month/year",
+   "on_screen": [
+    [
+     134.467,
+     138.333
+    ]
+   ],
+   "samples": 11,
+   "hard_samples": 2
+  },
+  {
+   "id": "tmpuser",
+   "label": "Temporary internet-banking username",
+   "category": "credential",
+   "page": "create_password",
+   "rationale": "bank-issued username for first login",
+   "on_screen": [
+    [
+     138.367,
+     154.633
+    ]
+   ],
+   "samples": 42,
+   "hard_samples": 2
+  },
+  {
+   "id": "kio_pid",
+   "label": "paymentId (URL)",
+   "category": "transaction_identifier",
+   "page": "create_password",
+   "rationale": "gateway payment id on the post-payment redirect",
+   "on_screen": [
+    [
+     138.367,
+     154.633
+    ]
+   ],
+   "samples": 42,
+   "hard_samples": 42
+  },
+  {
+   "id": "kio_auth",
+   "label": "auth code (URL)",
+   "category": "transaction_identifier",
+   "page": "create_password",
+   "rationale": "card authorization code on the redirect URL",
+   "on_screen": [
+    [
+     138.367,
+     154.633
+    ]
+   ],
+   "samples": 42,
+   "hard_samples": 42
+  },
+  {
+   "id": "kio_ref",
+   "label": "ref (URL)",
+   "category": "transaction_identifier",
+   "page": "create_password",
+   "rationale": "transaction reference on the redirect URL",
+   "on_screen": [
+    [
+     138.367,
+     154.633
+    ]
+   ],
+   "samples": 42,
+   "hard_samples": 42
+  }
+ ],
+ "not_pii": [
+  {
+   "id": "v_masked_pan",
+   "label": "Card number, site-masked (************ 4567)",
+   "reason": "the site already masks it; redacting it again destroys demo content for no privacy gain",
+   "samples": 4
+  },
+  {
+   "id": "v_pin_dots",
+   "label": "PIN, shown as dots",
+   "reason": "already masked by the site",
+   "samples": 4
+  },
+  {
+   "id": "v_captcha_reg",
+   "label": "Captcha challenge image (registration form)",
+   "reason": "a challenge image, not customer data",
+   "samples": 9
+  },
+  {
+   "id": "v_captcha_pay",
+   "label": "Captcha challenge image (payment page)",
+   "reason": "a challenge image, not customer data",
+   "samples": 3
+  },
+  {
+   "id": "v_lbl_acct",
+   "label": "'Account Number' field label",
+   "reason": "page furniture",
+   "samples": 14
+  },
+  {
+   "id": "v_hint_acct",
+   "label": "Account-number hint text",
+   "reason": "page furniture",
+   "samples": 14
+  },
+  {
+   "id": "v_lbl_branch",
+   "label": "Branch-code hint text",
+   "reason": "page furniture",
+   "samples": 14
+  },
+  {
+   "id": "v_prefix91",
+   "label": "'91' country prefix box",
+   "reason": "a country code, not the subscriber number",
+   "samples": 14
+  },
+  {
+   "id": "v_country",
+   "label": "Country dropdown value ('India')",
+   "reason": "not identifying",
+   "samples": 14
+  },
+  {
+   "id": "v_amount",
+   "label": "Billing amount (Rs 1.00)",
+   "reason": "merchant billing info shown by the demo",
+   "samples": 12
+  },
+  {
+   "id": "v_merchant",
+   "label": "Merchant name (STATE BANK GROUP)",
+   "reason": "merchant billing info shown by the demo",
+   "samples": 12
+  },
+  {
+   "id": "v_help",
+   "label": "'Help?' link on the expiry row",
+   "reason": "page furniture",
+   "samples": 3
+  },
+  {
+   "id": "v_url_result",
+   "label": "URL 'result=CAPTURED&auth=' text",
+   "reason": "parameter names and a non-identifying status value",
+   "samples": 17
+  },
+  {
+   "id": "v_url_post",
+   "label": "URL '&postdate=0715&trackid=' text",
+   "reason": "parameter names and a date fragment",
+   "samples": 17
+  },
+  {
+   "id": "v_tmpuser_lbl",
+   "label": "'Temporary Username for Internet Banking is' label",
+   "reason": "page furniture",
+   "samples": 17
+  },
+  {
+   "id": "v_pay_domain",
+   "label": "Payment gateway scheme/domain/path",
+   "reason": "tells the viewer which site they are on; not identifying",
+   "samples": 12
+  },
+  {
+   "id": "v_trackid",
+   "label": "Track ID (000072559915072015)",
+   "reason": "the merchant's own order reference shown in the Billing Information panel alongside Merchant/Website/Amount; it identifies an order, not the customer",
+   "samples": 12
+  },
+  {
+   "id": "v_url_trackid",
+   "label": "URL 'trackid=' value",
+   "reason": "same merchant order reference as the Track ID field",
+   "samples": 17
+  }
+ ],
+ "per_item": {
+  "acct": {
+   "label": "Account Number",
+   "coverage": 1.0,
+   "samples": 35,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "cif": {
+   "label": "CIF Number",
+   "coverage": 1.0,
+   "samples": 35,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "branch": {
+   "label": "Branch Code",
+   "coverage": 1.0,
+   "samples": 35,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "mobile": {
+   "label": "Registered Mobile Number",
+   "coverage": 1.0,
+   "samples": 35,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "pay_id": {
+   "label": "PaymentID (URL)",
+   "coverage": 0.966,
+   "samples": 29,
+   "leaked": 1,
+   "leak_runs": [
+    [
+     123.267,
+     123.267
+    ]
+   ],
+   "first_leak": 123.267,
+   "weak_blur": 0,
+   "verdict": "partially_redacted"
+  },
+  "cardnum": {
+   "label": "Card Number (PAN)",
+   "coverage": 1.0,
+   "samples": 6,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "expiry": {
+   "label": "Card expiry (Valid Thru)",
+   "coverage": 0.75,
+   "samples": 8,
+   "leaked": 2,
+   "leak_runs": [
+    [
+     134.367,
+     134.433
+    ]
+   ],
+   "first_leak": 134.367,
+   "weak_blur": 0,
+   "verdict": "partially_redacted"
+  },
+  "cardname": {
+   "label": "Cardholder's Name",
+   "coverage": 1.0,
+   "samples": 6,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "cardnum_tok": {
+   "label": "Card Number (tokenized)",
+   "coverage": 0.333,
+   "samples": 3,
+   "leaked": 2,
+   "leak_runs": [
+    [
+     134.167,
+     134.433
+    ]
+   ],
+   "first_leak": 134.167,
+   "weak_blur": 0,
+   "verdict": "partially_redacted"
+  },
+  "cardname_tok": {
+   "label": "Cardholder's Name (tokenized)",
+   "coverage": 0.333,
+   "samples": 3,
+   "leaked": 2,
+   "leak_runs": [
+    [
+     134.167,
+     134.433
+    ]
+   ],
+   "first_leak": 134.167,
+   "weak_blur": 0,
+   "verdict": "partially_redacted"
+  },
+  "rtr_id": {
+   "label": "PaymentID (URL)",
+   "coverage": 1.0,
+   "samples": 11,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "c_name": {
+   "label": "Cardholder's Name",
+   "coverage": 1.0,
+   "samples": 11,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "c_exp": {
+   "label": "Card expiry (Expiration Month/Year)",
+   "coverage": 1.0,
+   "samples": 11,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "tmpuser": {
+   "label": "Temporary internet-banking username",
+   "coverage": 0.0,
+   "samples": 42,
+   "leaked": 42,
+   "leak_runs": [
+    [
+     138.367,
+     154.633
+    ]
+   ],
+   "first_leak": 138.367,
+   "weak_blur": 0,
+   "verdict": "not_redacted"
+  },
+  "kio_pid": {
+   "label": "paymentId (URL)",
+   "coverage": 1.0,
+   "samples": 42,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "kio_auth": {
+   "label": "auth code (URL)",
+   "coverage": 1.0,
+   "samples": 42,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  },
+  "kio_ref": {
+   "label": "ref (URL)",
+   "coverage": 1.0,
+   "samples": 42,
+   "leaked": 0,
+   "leak_runs": [],
+   "first_leak": null,
+   "weak_blur": 0,
+   "verdict": "redacted"
+  }
+ },
+ "state_timeline": [
+  {
+   "page": "intro_logo",
+   "t": [
+    0.0,
+    3.8
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "title_card",
+   "t": [
+    3.833,
+    24.333
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "onlinesbi_home",
+   "t": [
+    24.367,
+    34.2
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "login_landing",
+   "t": [
+    34.233,
+    35.867
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "login_page",
+   "t": [
+    35.9,
+    71.633
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "registration_form",
+   "t": [
+    71.667,
+    90.133
+   ],
+   "pii_expected": [
+    "acct",
+    "branch",
+    "cif",
+    "mobile"
+   ],
+   "pii_redacted": [
+    "acct",
+    "branch",
+    "cif",
+    "mobile"
+   ],
+   "pii_leaked": [],
+   "neighbours_clipped": [
+    "n_acct_hint",
+    "n_branch_hint",
+    "n_cif_hint",
+    "n_mobile_91",
+    "n_mobile_hint"
+   ],
+   "legible_content_obscured": [
+    "v_country",
+    "v_lbl_branch",
+    "v_prefix91"
+   ],
+   "status": "defect"
+  },
+  {
+   "page": "otp_page",
+   "t": [
+    90.167,
+    99.533
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "atm_card_choice",
+   "t": [
+    99.567,
+    123.233
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "payment_gateway",
+   "t": [
+    123.267,
+    134.433
+   ],
+   "pii_expected": [
+    "cardname",
+    "cardname_tok",
+    "cardnum",
+    "cardnum_tok",
+    "expiry",
+    "pay_id"
+   ],
+   "pii_redacted": [
+    "cardname",
+    "cardnum"
+   ],
+   "pii_leaked": [
+    "cardname_tok",
+    "cardnum_tok",
+    "expiry",
+    "pay_id"
+   ],
+   "neighbours_clipped": [
+    "n_expiry_help",
+    "n_payid_lbl"
+   ],
+   "legible_content_obscured": [
+    "v_help",
+    "v_pay_domain",
+    "v_trackid"
+   ],
+   "status": "defect"
+  },
+  {
+   "page": "payment_confirmation",
+   "t": [
+    134.467,
+    138.333
+   ],
+   "pii_expected": [
+    "c_exp",
+    "c_name",
+    "rtr_id"
+   ],
+   "pii_redacted": [
+    "c_exp",
+    "c_name",
+    "rtr_id"
+   ],
+   "pii_leaked": [],
+   "neighbours_clipped": [
+    "n_conf_pan",
+    "n_conf_pin",
+    "n_rtr_right"
+   ],
+   "legible_content_obscured": [
+    "v_masked_pan",
+    "v_pin_dots"
+   ],
+   "status": "defect"
+  },
+  {
+   "page": "create_password",
+   "t": [
+    138.367,
+    154.633
+   ],
+   "pii_expected": [
+    "kio_auth",
+    "kio_pid",
+    "kio_ref",
+    "tmpuser"
+   ],
+   "pii_redacted": [
+    "kio_auth",
+    "kio_pid",
+    "kio_ref"
+   ],
+   "pii_leaked": [
+    "tmpuser"
+   ],
+   "neighbours_clipped": [
+    "n_kio_post",
+    "n_kio_ref_lbl",
+    "n_kio_result",
+    "n_tmpuser_is"
+   ],
+   "legible_content_obscured": [
+    "v_url_post",
+    "v_url_result",
+    "v_url_trackid"
+   ],
+   "status": "defect"
+  },
+  {
+   "page": "registration_success",
+   "t": [
+    154.667,
+    171.2
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "outro_logo",
+   "t": [
+    171.233,
+    174.833
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  },
+  {
+   "page": "outro_links",
+   "t": [
+    174.867,
+    185.567
+   ],
+   "pii_expected": [],
+   "pii_redacted": [],
+   "pii_leaked": [],
+   "neighbours_clipped": [],
+   "legible_content_obscured": [],
+   "status": "clean"
+  }
+ ],
+ "findings": [
+  "MISSED \u2014 Temporary internet-banking username (tmpuser) was never redacted; readable across 42 sampled frames at 138.367-154.633s",
+  "PARTIAL \u2014 Card Number (tokenized) (cardnum_tok) redacted for 1/3 samples; still readable at 134.167-134.433s",
+  "PARTIAL \u2014 Cardholder's Name (tokenized) (cardname_tok) redacted for 1/3 samples; still readable at 134.167-134.433s",
+  "PARTIAL \u2014 Card expiry (Valid Thru) (expiry) redacted for 6/8 samples; still readable at 134.367-134.433s",
+  "PARTIAL \u2014 PaymentID (URL) (pay_id) redacted for 28/29 samples; still readable at 123.267s",
+  "OVER-REDACTED \u2014 Country dropdown value ('India') (v_country) must stay legible but no longer matches at 76.567-89.567s",
+  "OVER-REDACTED \u2014 'Help?' link on the expiry row (v_help) must stay legible but no longer matches at 131.967-133.967s",
+  "OVER-REDACTED \u2014 Branch-code hint text (v_lbl_branch) must stay legible but no longer matches at 76.567-89.567s",
+  "OVER-REDACTED \u2014 Card number, site-masked (************ 4567) (v_masked_pan) must stay legible but no longer matches at 134.467-137.467s",
+  "OVER-REDACTED \u2014 Payment gateway scheme/domain/path (v_pay_domain) must stay legible but no longer matches at 124.267-134.267s",
+  "OVER-REDACTED \u2014 PIN, shown as dots (v_pin_dots) must stay legible but no longer matches at 134.467-137.467s",
+  "OVER-REDACTED \u2014 '91' country prefix box (v_prefix91) must stay legible but no longer matches at 76.567-89.567s",
+  "OVER-REDACTED \u2014 Track ID (000072559915072015) (v_trackid) must stay legible but no longer matches at 124.267-134.267s",
+  "OVER-REDACTED \u2014 URL '&postdate=0715&trackid=' text (v_url_post) must stay legible but no longer matches at 138.367-154.367s",
+  "OVER-REDACTED \u2014 URL 'result=CAPTURED&auth=' text (v_url_result) must stay legible but no longer matches at 138.367-154.367s",
+  "OVER-REDACTED \u2014 URL 'trackid=' value (v_url_trackid) must stay legible but no longer matches at 138.367-154.367s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_acct_hint) at 76.567-89.567s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_branch_hint) at 76.567-89.567s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_cif_hint) at 76.567-89.567s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_conf_pan) at 134.467-137.467s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_conf_pin) at 134.467-137.467s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_expiry_help) at 131.967-133.967s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_kio_post) at 138.367-154.367s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_kio_ref_lbl) at 138.367-154.367s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_kio_result) at 138.367-154.367s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_mobile_91) at 76.567-89.567s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_mobile_hint) at 76.567-89.567s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_payid_lbl) at 124.267-134.267s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_rtr_right) at 134.467-137.467s",
+  "ENCROACHED \u2014 a redaction overlapped its neighbouring text (n_tmpuser_is) at 139.367-154.367s",
+  "OVER-BLUR \u2014 off-target changed pixels exceeded the frame budget on 16 sampled frames at 125.0-155.0s"
+ ],
+ "scores": {
+  "overall": 0.7752,
+  "functional_correctness": 0.846,
+  "constraint_satisfaction": 0.4767,
+  "robustness": 0.9583,
+  "artifact_quality": 1.0,
+  "neighbor_legibility": 0.2301
+ },
+ "detail": {
+  "instances": {
+   "acct": 1.0,
+   "cif": 1.0,
+   "branch": 1.0,
+   "mobile": 1.0,
+   "pay_id": 0.966,
+   "cardnum": 1.0,
+   "expiry": 0.75,
+   "cardname": 1.0,
+   "cardnum_tok": 0.333,
+   "cardname_tok": 0.333,
+   "rtr_id": 1.0,
+   "c_name": 1.0,
+   "c_exp": 1.0,
+   "tmpuser": 0.0,
+   "kio_pid": 1.0,
+   "kio_auth": 1.0,
+   "kio_ref": 1.0
+  },
+  "visible": {
+   "v_captcha_reg": 1.0,
+   "v_lbl_acct": 1.0,
+   "v_hint_acct": 1.0,
+   "v_lbl_branch": 0.0,
+   "v_prefix91": 0.0,
+   "v_country": 0.0,
+   "v_amount": 1.0,
+   "v_merchant": 1.0,
+   "v_pay_domain": 0.083,
+   "v_trackid": 0.083,
+   "v_captcha_pay": 1.0,
+   "v_help": 0.0,
+   "v_masked_pan": 0.0,
+   "v_pin_dots": 0.0,
+   "v_url_result": 0.0,
+   "v_url_post": 0.0,
+   "v_tmpuser_lbl": 1.0,
+   "v_url_trackid": 0.0
+  },
+  "neighbors": {
+   "n_acct_hint": 0.0,
+   "n_cif_hint": 0.0,
+   "n_branch_hint": 0.0,
+   "n_mobile_hint": 0.0,
+   "n_mobile_91": 0.0,
+   "n_payid_lbl": 0.083,
+   "n_cardnum_lbl": 1.0,
+   "n_name_lbl": 1.0,
+   "n_expiry_help": 0.0,
+   "n_rtr_right": 0.0,
+   "n_conf_lbls": 1.0,
+   "n_conf_pan": 0.0,
+   "n_conf_pin": 0.0,
+   "n_tmpuser_is": 0.059,
+   "n_kio_result": 0.0,
+   "n_kio_ref_lbl": 0.0,
+   "n_kio_post": 0.0,
+   "n_kio_mag": 1.0
+  },
+  "budget_frames": "77/93",
+  "hard": "184/192",
+  "blur_min_size": "347/347",
+  "blur_max_size": "127/127",
+  "frames_ok": true,
+  "audio_ok": true,
+  "duration_ok": true
+ }
+}

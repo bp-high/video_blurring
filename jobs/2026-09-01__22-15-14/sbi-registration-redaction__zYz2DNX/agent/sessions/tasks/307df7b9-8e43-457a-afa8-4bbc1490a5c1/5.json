@@ -1,0 +1,9 @@
+{
+  "id": "5",
+  "subject": "Verify the output video",
+  "description": "Spot-check the redacted output at the same critical frames to confirm every region is covered and no clean copies are visible.",
+  "activeForm": "Verifying output",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

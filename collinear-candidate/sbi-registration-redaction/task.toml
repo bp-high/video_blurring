@@ -24,3 +24,9 @@ storage_gb = 4
 
 [oracle]
 entrypoint = "solution/solve.sh"
+
+# Keep the agent's deliverable on the host so a run can be inspected, not
+# just scored — the container is torn down with everything else in /app.
+[[artifacts]]
+source = "/app/output/redacted.mp4"
+destination = "redacted.mp4"

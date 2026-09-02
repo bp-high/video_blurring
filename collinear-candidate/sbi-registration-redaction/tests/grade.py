@@ -298,32 +298,41 @@ def main():
     artifact = 0.4 * integrity + 0.3 * min_ok + 0.3 * max_ok
     overall = (0.40 * functional + 0.30 * constraint +
                0.15 * robustness + 0.15 * artifact)
-    reward = dict(overall=round(overall, 4),
+    # Harbor parses reward.json straight into VerifierResult.rewards, typed
+    # dict[str, float | int]: every value must be a scalar and no key may be
+    # null, so the detail tables and the findings ride in analysis.json.
+    #
+    # "reward" duplicates "overall" on purpose. Harbor treats a key by that
+    # exact name as the headline score (viewer/server.py, cli/jobs.py
+    # _primary_reward); with several keys and none of them called "reward" it
+    # gives up and `harbor view` shows the trial's Outcome as "-".
+    reward = dict(reward=round(overall, 4),
+                overall=round(overall, 4),
                 functional_correctness=round(functional, 4),
                 constraint_satisfaction=round(constraint, 4),
                 robustness=round(robustness, 4),
-                artifact_quality=round(artifact, 4),
-                neighbor_legibility=(round(score_n, 4)
-                                     if score_n is not None else None),
-                detail=dict(instances={k: round(v, 3) for k, v in inst_scores.items()},
-                            visible={k: round(v, 3) for k, v in vis_scores.items()},
-                            neighbors={k: round(v, 3) for k, v in nbr_scores.items()},
-                            budget_frames=f"{res['budget'][0]}/{res['budget'][1]}",
-                            hard=f"{res['hard'][0]}/{res['hard'][1]}",
-                            blur_min_size=f"{res['minsz'][0]}/{res['minsz'][1]}",
-                            blur_max_size=f"{res['maxsz'][0]}/{res['maxsz'][1]}",
-                            frames_ok=frames_ok, audio_ok=audio_ok,
-                            duration_ok=dur_ok))
+                artifact_quality=round(artifact, 4))
+    if score_n is not None:
+        reward["neighbor_legibility"] = round(score_n, 4)
+    detail = dict(instances={k: round(v, 3) for k, v in inst_scores.items()},
+                  visible={k: round(v, 3) for k, v in vis_scores.items()},
+                  neighbors={k: round(v, 3) for k, v in nbr_scores.items()},
+                  budget_frames=f"{res['budget'][0]}/{res['budget'][1]}",
+                  hard=f"{res['hard'][0]}/{res['hard'][1]}",
+                  blur_min_size=f"{res['minsz'][0]}/{res['minsz'][1]}",
+                  blur_max_size=f"{res['maxsz'][0]}/{res['maxsz'][1]}",
+                  frames_ok=frames_ok, audio_ok=audio_ok,
+                  duration_ok=dur_ok)
     analysis = _analysis.build(gt, res, fps, {
         k: reward[k] for k in ("overall", "functional_correctness",
                                "constraint_satisfaction", "robustness",
                                "artifact_quality", "neighbor_legibility")
         if reward.get(k) is not None})
+    analysis["detail"] = detail
     with open(os.path.join(args.out_dir, "analysis.json"), "w") as f:
         json.dump(analysis, f, indent=1)
     with open(os.path.join(args.out_dir, "analysis.md"), "w") as f:
         f.write(_analysis.to_markdown(analysis, reward))
-    reward["findings"] = analysis["findings"][:12]
     finish(reward)
 
 

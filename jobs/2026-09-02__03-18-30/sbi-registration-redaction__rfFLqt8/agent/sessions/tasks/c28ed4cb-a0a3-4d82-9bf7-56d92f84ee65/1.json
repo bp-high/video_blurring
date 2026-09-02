@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "subject": "Survey full video for sensitive data appearances",
+  "description": "Extract frames at appropriate cadence and inspect the entire 3m06s video to catalog every place customer PII appears (name, DOB, mobile, email, account number, branch code, card number, CVV, address, OTP, passwords, etc.), noting frame ranges and screen regions.",
+  "activeForm": "Surveying full video for sensitive data",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

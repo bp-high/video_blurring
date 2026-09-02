@@ -1,0 +1,9 @@
+{
+  "id": "4",
+  "subject": "Build ffmpeg redaction filter and encode output",
+  "description": "Apply the mapped boxes via a boxblur/drawbox filter over the appropriate time ranges, preserve audio, and write to /app/output/redacted.mp4.",
+  "activeForm": "Applying redactions",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

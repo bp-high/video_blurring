@@ -1,0 +1,9 @@
+{
+  "id": "2",
+  "subject": "Build redaction plan (time × bbox segments)",
+  "description": "Convert catalog into concrete list of {start, end, bbox} redaction regions. Round bounding boxes generously so they cover data across scrolling and slight movement. Leave already-masked fields alone.",
+  "activeForm": "Building redaction plan",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

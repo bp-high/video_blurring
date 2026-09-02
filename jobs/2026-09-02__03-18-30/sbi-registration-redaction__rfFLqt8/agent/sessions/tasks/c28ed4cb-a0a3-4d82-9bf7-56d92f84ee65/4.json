@@ -1,0 +1,9 @@
+{
+  "id": "4",
+  "subject": "Verify output by sampling frames",
+  "description": "Spot-check the produced /app/output/redacted.mp4 by re-extracting frames from the sensitive regions and confirming they are unreadable while non-sensitive UI stays visible.",
+  "activeForm": "Verifying output",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

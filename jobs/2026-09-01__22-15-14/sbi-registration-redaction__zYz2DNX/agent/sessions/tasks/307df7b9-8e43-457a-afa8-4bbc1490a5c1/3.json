@@ -1,0 +1,9 @@
+{
+  "id": "3",
+  "subject": "Verify with dense sampling of borderline moments",
+  "description": "Extract 5-10 fps frames around form fills, OTP display, card entry, and password entry to catch any brief flashes.",
+  "activeForm": "Verifying borderline moments",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

@@ -1,0 +1,123 @@
+{
+    "id": "58156a5a-b426-405a-9796-a986d1277f20",
+    "task_name": "sbi-registration-redaction",
+    "trial_name": "sbi-registration-redaction__rfFLqt8",
+    "trial_uri": "file:///Users/bhavishpahwa/video_blurring/jobs/2026-09-02__03-18-30/sbi-registration-redaction__rfFLqt8",
+    "task_id": {
+        "path": "collinear-candidate/sbi-registration-redaction"
+    },
+    "source": null,
+    "task_checksum": "b484ac1aa8ce9f46c2e3b9b18b62c90381ff2961a06120155309457f489df727",
+    "config": {
+        "task": {
+            "path": "collinear-candidate/sbi-registration-redaction",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "sbi-registration-redaction__rfFLqt8",
+        "trials_dir": "jobs/2026-09-02__03-18-30",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "claude-code",
+            "import_path": null,
+            "model_name": "anthropic/claude-opus-4-7",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "9e484419-89ad-447c-b3a0-0b24a738cdb2",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "claude-code",
+        "version": "2.1.257",
+        "model_info": {
+            "name": "claude-opus-4-7",
+            "provider": "anthropic"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 4890573,
+        "n_cache_tokens": 4744775,
+        "n_output_tokens": 46095,
+        "cost_usd": 4.43573,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.7752,
+            "overall": 0.7752,
+            "functional_correctness": 0.846,
+            "constraint_satisfaction": 0.4767,
+            "robustness": 0.9583,
+            "artifact_quality": 1.0,
+            "neighbor_legibility": 0.2301
+        }
+    },
+    "verifier_environment_mode": "shared",
+    "exception_info": null,
+    "started_at": "2026-09-01T21:48:32.094635Z",
+    "finished_at": "2026-09-01T22:05:47.399100Z",
+    "environment_setup": {
+        "started_at": "2026-09-01T21:48:32.214194Z",
+        "finished_at": "2026-09-01T21:48:37.463163Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-09-01T21:48:37.463498Z",
+        "finished_at": "2026-09-01T21:51:38.172319Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-09-01T21:51:38.181411Z",
+        "finished_at": "2026-09-01T22:05:34.945881Z"
+    },
+    "verifier": {
+        "started_at": "2026-09-01T22:05:36.540983Z",
+        "finished_at": "2026-09-01T22:05:43.854754Z"
+    },
+    "step_results": null
+}

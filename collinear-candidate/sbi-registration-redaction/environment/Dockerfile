@@ -1,7 +1,7 @@
 FROM python:3.11-slim-bookworm
 
 RUN pip install --no-cache-dir \
-    opencv-python-headless==5.0.0 \
+    opencv-python-headless==5.0.0.93 \
     numpy==2.4.6 \
     imageio-ffmpeg==0.6.0
 

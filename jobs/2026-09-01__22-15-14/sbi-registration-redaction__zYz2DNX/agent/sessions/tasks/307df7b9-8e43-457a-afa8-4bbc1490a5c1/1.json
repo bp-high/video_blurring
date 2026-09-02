@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "subject": "Survey video content at 1fps",
+  "description": "View all 186 frames to identify segments containing sensitive customer data (name, DOB, account number, mobile, email, card details, CIF, branch code, address, OTP, password, PIN).",
+  "activeForm": "Surveying video content",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

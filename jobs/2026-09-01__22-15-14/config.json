@@ -1,0 +1,13 @@
+{
+    "agents": [
+        {
+            "name": "claude-code",
+            "model_name": "anthropic/claude-opus-4-7"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "collinear-candidate/sbi-registration-redaction"
+        }
+    ]
+}

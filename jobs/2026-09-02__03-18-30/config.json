@@ -1,0 +1,14 @@
+{
+    "job_name": "2026-09-02__03-18-30",
+    "agents": [
+        {
+            "name": "claude-code",
+            "model_name": "anthropic/claude-opus-4-7"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "collinear-candidate/sbi-registration-redaction"
+        }
+    ]
+}

@@ -4,3 +4,5 @@ __pycache__/
 /frames/
 /templates/
 /hits.json
+*.DS_Store
+.venv/

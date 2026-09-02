@@ -1,0 +1,75 @@
+{
+    "id": "9e484419-89ad-447c-b3a0-0b24a738cdb2",
+    "started_at": "2026-09-02T03:18:31.963111",
+    "updated_at": "2026-09-02T03:35:47.416804",
+    "finished_at": "2026-09-02T03:35:47.416804",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 0,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "claude-code__claude-opus-4-7__adhoc": {
+                "n_trials": 1,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "artifact_quality": 1.0,
+                        "constraint_satisfaction": 0.4767,
+                        "functional_correctness": 0.846,
+                        "neighbor_legibility": 0.2301,
+                        "overall": 0.7752,
+                        "reward": 0.7752,
+                        "robustness": 0.9583
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.7752": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "overall": {
+                        "0.7752": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "functional_correctness": {
+                        "0.846": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "constraint_satisfaction": {
+                        "0.4767": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "robustness": {
+                        "0.9583": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "artifact_quality": {
+                        "1.0": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    },
+                    "neighbor_legibility": {
+                        "0.2301": [
+                            "sbi-registration-redaction__rfFLqt8"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": 4890573,
+        "n_cache_tokens": 4744775,
+        "n_output_tokens": 46095,
+        "cost_usd": 4.43573
+    }
+}

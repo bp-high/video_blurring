@@ -16,6 +16,6 @@ python3 "$TESTS_DIR/grade.py" \
   --ffmpeg ffmpeg
 
 if [ ! -f /logs/verifier/reward.json ]; then
-  echo '{"overall": 0.0, "functional_correctness": 0.0, "constraint_satisfaction": 0.0, "robustness": 0.0, "artifact_quality": 0.0, "error": "grader crashed"}' > /logs/verifier/reward.json
+  echo '{"reward": 0.0, "overall": 0.0, "functional_correctness": 0.0, "constraint_satisfaction": 0.0, "robustness": 0.0, "artifact_quality": 0.0}' > /logs/verifier/reward.json
   echo "0.0" > /logs/verifier/reward.txt
 fi

@@ -106,7 +106,7 @@ Alongside the reward the verifier writes `analysis.json` and `analysis.md`, so a
 **Pass bar:** overall ≥ 0.95 AND functional_correctness ≥ 0.95 AND neighbor_legibility ≥ 0.95.
 
 ## Oracle solution
-`solution/solve.sh` (~6–8 min): `detect_static.py` matches each declared value inside a small window around its known position on **every frame** of the page that shows it, producing frame-exact appearance/disappearance
+`solution/solve.sh`: `detect_static.py` matches each declared value inside a small window around its known position on **every frame** of the page that shows it, producing frame-exact appearance/disappearance
 intervals; `blur.py` renders those intervals with pixelate+Gaussian redaction and muxes the original audio unchanged. The tokenized card
 values are declared as their own items, so their intervals are found the same way as everything else  and the oracle's discovery of them is recorded
 in `assets/items.json`, not hardcoded into the renderer.

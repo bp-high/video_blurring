@@ -14,7 +14,7 @@ An agent has to inventory what is sensitive across 14 page states, derive exact 
 ## Running it
 
 ```bash
-# oracle solution (~6-8 min) must score 1.0
+# oracle solution must score 1.0
 harbor run -p ./collinear-candidate/sbi-registration-redaction -a oracle
 
 # a target model
